@@ -1,9 +1,10 @@
 import React from 'react'
+import HeaderBar from './headerBar'
 
 const login = () => {
-    return (
-    <div>login</div>
-    )
+    return (<>
+    <HeaderBar title='Login'/>
+    </>)
 }
 
 export default login

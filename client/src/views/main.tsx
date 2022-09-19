@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom'
 import HeaderBar from './headerBar';
-import Background from '../images/giphy.gif'
-import Background2 from '../images/forrest.png'
+import Background from '../images/giphy1.gif'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -45,16 +45,17 @@ const imageStyle ={
 }
 const Main = () => {
     return (<div >
-    <HeaderBar />
-    <img alt='forrest' style={ imageStyle } src='https://imgs.search.brave.com/T-P-O4YLS_ZosnHvHNyjhmxz0JJTX3Eznw_i7qzqJOw/rs:fit:1200:1200:1/g:ce/aHR0cHM6Ly93YWxs/dXAubmV0L3dwLWNv/bnRlbnQvdXBsb2Fk/cy8yMDE2LzAyLzE4/LzI4NDY2Mi1wbGFu/dHMtbmF0dXJlLXJp/dmVyLWZvcmVzdC5q/cGc'></img>
+    <HeaderBar title='Upcoming Events' addButton='' />
+    <img alt='forrest' style={ imageStyle } src={ Background }></img>
     <TableContainer style={ tableStyle } component={Paper}>
-        <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
+    <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
             <TableRow>
-            <TableCell>Event Name</TableCell>
-            <TableCell align="right">Type </TableCell>
-            <TableCell align="right">Location </TableCell>
-            <TableCell align="right">Date </TableCell>
+            <TableCell><strong><h1>Event Name</h1></strong></TableCell>
+            <TableCell align="right"><strong><h1>Type </h1></strong></TableCell>
+            <TableCell align="right"><strong><h1>Location</h1></strong>
+            </TableCell>
+            <TableCell align="right"><strong><h1>Date</h1></strong></TableCell>
             </TableRow>
         </TableHead>
         <TableBody>
@@ -70,6 +71,7 @@ const Main = () => {
                 <TableCell align="right">{row.location}</TableCell>
                 <TableCell align="right">{row.date}</TableCell>
             </TableRow>
+            
             ))}
         </TableBody>
         </Table>

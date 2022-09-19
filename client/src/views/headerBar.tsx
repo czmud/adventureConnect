@@ -1,7 +1,9 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
+import SkyBackground from '../images/clouds.gif'
 
-const HeaderBar = () => {
+const HeaderBar = ( props: any ) => {
+    const { title } = props;
     const nav = useNavigate();
 
     const headStyle = {
@@ -10,7 +12,8 @@ const HeaderBar = () => {
         borderBottom: '2px solid black',margin: '0px',
         display: 'flex',
         justifyContent: 'space-around', 
-        alignItems: 'center'
+        alignItems: 'center',
+        background: 'rgba(76, 175, 80, 0.3)'
     }
     const titleStyle={
         color: 'purple',
@@ -21,9 +24,10 @@ const HeaderBar = () => {
         width: '8%',
     }
 
+
     return (<div style={ headStyle }>
         <h1 style={titleStyle}>AdvCon</h1>
-        <h2>Upcoiming Events</h2>
+        <h1>{ title }</h1>
         <button style= { buttonStyle } onClick={()=> nav('/login')}>Login</button>
     </div>)
 }
