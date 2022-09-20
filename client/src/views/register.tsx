@@ -1,6 +1,6 @@
 import React from 'react'
 
-import HeaderBar from './headerBar'
+import HeaderBar from '../components/HeaderBar'
 import Background from '../images/camoCollage.png'
 import RegisterForm from '../components/forms/RegisterForm'
 
