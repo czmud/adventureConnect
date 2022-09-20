@@ -1,3 +1,6 @@
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import 'dotenv/config';
 import { Organizer } from "../models/organizer.model";
 import { Request, Response } from "express";
 
@@ -16,7 +19,15 @@ export const findOneOrganizer = (req: Request, res: Response) => {
 export const createNewOrganizer = (req: Request, res: Response) => {
     console.log("created "+JSON.stringify(req.body));
     Organizer.create(req.body)
-        .then(newlyCreatedOrganizer => res.json({ organizer: newlyCreatedOrganizer }))
+        .then( newlyCreatedOrganizer => {
+            const organizerToken = jwt.sign({
+                id: newlyCreatedOrganizer._id
+            }, process.env.SECRET_KEY!);
+
+            res        
+                .cookie("organizerToken", organizerToken, {httpOnly: true})  
+                .json({ msg: "success!" });
+        })
         .catch(err => res.status(400).json(err));
 };
 
@@ -33,3 +44,30 @@ export const deleteOrganizer = (req: Request, res: Response) => {
         .then(result => res.json({ result: result }))
         .catch(err => res.json({ message: "something went wrong", error: err}));
 };
+
+export const logOrganizerIn = async(req: Request, res: Response) => {
+    const organizer = await Organizer.findOne({ email: req.body.email })
+
+    if( organizer === null ){
+        return res.sendStatus(400);
+    }
+
+    const passwordIsCorrect: boolean = await bcrypt.compare(req.body.password, organizer.passwordHash );
+
+    if( !passwordIsCorrect ){
+        return res.sendStatus(400);
+    }
+
+    const organizerToken = jwt.sign({
+        id: organizer.id
+    }, process.env.SECRET_KEY!);
+
+    res
+        .cookie("organizerToken", organizerToken, {httpOnly: true})  
+        .json({ msg: "success!" });
+}
+
+export const logOrganizerOut = (req: Request, res: Response) => {
+    res.clearCookie('organizerToken');
+    res.sendStatus(200);
+}
