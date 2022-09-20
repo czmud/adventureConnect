@@ -1,13 +1,26 @@
 import React from 'react'
-import { TextField } from '@mui/material'
 import HeaderBar from './headerBar'
+import Background from '../images/camoCollage.png'
+import RegisterForm from '../components/RegisterForm'
 
-const register = () => {
+const imageStyle ={
+    height: '1200px',
+    width: '100%',
+    margin: '0px',
+    position: 'absolute' as 'absolute',
+    left: '0',
+    zIndex: '-1',
+    opacity: '75%'
+}
+
+const Register = () => {
+
     return (<>
-    <HeaderBar title='Register'/>
-    <TextField id="outlined-basic" label="Outlined" variant="outlined" />
-    <div>register</div>
+    
+    <HeaderBar title='Start Organizing Today!' btnTitle='Home' btnRoute=''/>
+    <img style={ imageStyle } alt='background camo' src={ Background }/>
+    <RegisterForm />
     </>)
 }
 
-export default register
+export default Register

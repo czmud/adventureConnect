@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import SkyBackground from '../images/clouds.gif'
 
 const HeaderBar = ( props: any ) => {
-    const { title } = props;
+    const { title, btnTitle, btnRoute } = props;
     const nav = useNavigate();
 
     const headStyle = {
@@ -28,7 +28,7 @@ const HeaderBar = ( props: any ) => {
     return (<div style={ headStyle }>
         <h1 style={titleStyle}>AdvCon</h1>
         <h1>{ title }</h1>
-        <button style= { buttonStyle } onClick={()=> nav('/login')}>Login</button>
+        <button style= { buttonStyle } onClick={()=> nav('/'+btnRoute)}>{btnTitle}</button>
     </div>)
 }
 

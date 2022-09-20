@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom'
 import HeaderBar from './headerBar';
 import Background from '../images/giphy1.gif'
 import Table from '@mui/material/Table';
@@ -45,7 +44,7 @@ const imageStyle ={
 }
 const Main = () => {
     return (<div >
-    <HeaderBar title='Upcoming Events' addButton='' />
+    <HeaderBar title='Upcoming Events' btnTitle='Login' btnRoute='login'/>
     <img alt='forrest' style={ imageStyle } src={ Background }></img>
     <TableContainer style={ tableStyle } component={Paper}>
     <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
