@@ -1,7 +1,7 @@
 import * as React from 'react';
-
 import HeaderBar from './headerBar';
-import Background from '../images/giphy1.gif'
+
+import { Link } from 'react-router-dom'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -43,14 +43,22 @@ const imageStyle ={
     left: '0',
     zIndex: '-1'
 }
-const Main = () => {
+const addStyle={
+    background: 'white',
+    position: 'relative' as 'relative',
+    top: '38px',
+    right: '35%',
+    zIndex: '3'
+}
+
+
+const Dashboard = () => {
     return (<div >
-
-    <HeaderBar title='Upcoming Events' btnTitle='Login' btnRoute='login'/>
-
-    <img alt='forrest' style={ imageStyle } src={ Background }></img>
+    <HeaderBar title='Upcoming Events' btnTitle='Logout' btnRoute='logout'/>
+    <img alt='forrest' style={ imageStyle } src='https://imgs.search.brave.com/T-P-O4YLS_ZosnHvHNyjhmxz0JJTX3Eznw_i7qzqJOw/rs:fit:1200:1200:1/g:ce/aHR0cHM6Ly93YWxs/dXAubmV0L3dwLWNv/bnRlbnQvdXBsb2Fk/cy8yMDE2LzAyLzE4/LzI4NDY2Mi1wbGFu/dHMtbmF0dXJlLXJp/dmVyLWZvcmVzdC5q/cGc'></img>
+    <Link  to='/events/new' style={ addStyle }> + New Event</Link>
     <TableContainer style={ tableStyle } component={Paper}>
-    <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
             <TableRow>
             <TableCell><strong><h1>Event Name</h1></strong></TableCell>
@@ -80,4 +88,4 @@ const Main = () => {
     </TableContainer>
     </div>);
 }
-export default Main;
+export default Dashboard;
