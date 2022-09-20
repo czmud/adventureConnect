@@ -1,4 +1,5 @@
 import React from 'react'
+
 import HeaderBar from './headerBar'
 import Background from '../images/camoCollage.png'
 import RegisterForm from '../components/RegisterForm'
@@ -24,3 +25,4 @@ const Register = () => {
 }
 
 export default Register
+

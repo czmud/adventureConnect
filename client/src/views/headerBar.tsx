@@ -1,9 +1,10 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
-import SkyBackground from '../images/clouds.gif'
 
 const HeaderBar = ( props: any ) => {
+
     const { title, btnTitle, btnRoute } = props;
+
     const nav = useNavigate();
 
     const headStyle = {
@@ -29,6 +30,7 @@ const HeaderBar = ( props: any ) => {
         <h1 style={titleStyle}>AdvCon</h1>
         <h1>{ title }</h1>
         <button style= { buttonStyle } onClick={()=> nav('/'+btnRoute)}>{btnTitle}</button>
+
     </div>)
 }
 

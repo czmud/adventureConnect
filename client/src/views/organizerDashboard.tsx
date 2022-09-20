@@ -1,5 +1,6 @@
 import * as React from 'react';
 import HeaderBar from './headerBar';
+
 import { Link } from 'react-router-dom'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -52,7 +53,6 @@ const addStyle={
 
 
 const Dashboard = () => {
-    
     return (<div >
     <HeaderBar title='Upcoming Events' btnTitle='Logout' btnRoute='logout'/>
     <img alt='forrest' style={ imageStyle } src='https://imgs.search.brave.com/T-P-O4YLS_ZosnHvHNyjhmxz0JJTX3Eznw_i7qzqJOw/rs:fit:1200:1200:1/g:ce/aHR0cHM6Ly93YWxs/dXAubmV0L3dwLWNv/bnRlbnQvdXBsb2Fk/cy8yMDE2LzAyLzE4/LzI4NDY2Mi1wbGFu/dHMtbmF0dXJlLXJp/dmVyLWZvcmVzdC5q/cGc'></img>
