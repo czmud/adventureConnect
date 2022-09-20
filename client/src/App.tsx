@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
-import Main from './views/main';
-import Dashboard from './views/organizerDashboard';
+import Main from './views/Main';
+import Dashboard from './views/Dashboard';
 
-import Register from './views/register';
-import Login from './views/login';
+import Register from './views/Register';
+import Login from './views/Login';
 
 
 function App() {
