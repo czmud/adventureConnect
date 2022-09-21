@@ -100,11 +100,7 @@ const RegisterForm = () => {
     }}
         noValidate
         autoComplete="off"
-<<<<<<< HEAD
         onSubmit={(event: React.FormEvent) => submitRegistrationForm(event, oneOrganizer, redirectAfterSuccessfulRegistration) }>
-=======
-        onSubmit={(event: React.FormEvent) => {event.preventDefault(); console.log("Submitted")}}>
->>>>>>> 7cd9275 (added login functionality. JWTs for auth working.)
             <h1>Register as Organizer</h1>
     <TextField
     required
