@@ -79,7 +79,6 @@ const RegisterForm = () => {
         axios.post( 'http://localhost:8000/api/organizers/register', oneOrganizer )
             .then( () => successCallback() )
             .catch( errors => {
-                console.log(errors.response);
                 const errorResponse = errors.response.data.errors;
                 const errorList: FormErrors[] = [];
                 for( const key of Object.keys(errorResponse)){
