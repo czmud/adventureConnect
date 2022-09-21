@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { TextField, Input, Box, FormControl, IconButton, OutlinedInput, InputLabel, InputAdornment, FormHelperText } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/Visibility'
@@ -22,6 +22,11 @@ const submitStyle ={
     margin: '20px 0px'
 }
 
+interface FormErrors{
+    path: string;
+    message: string;
+}
+
 type Action = {
     type: string, payload: string
 }
@@ -34,11 +39,13 @@ function reducer( oneOrganizer: RegisterOrganizer, action: Action ){
 }
 
 const RegisterForm = () => {
+    const navigate = useNavigate();
     const [oneOrganizer, dispatch] = React.useReducer( reducer, new RegisterOrganizer() );
     const [values, setValues] = React.useState<any>({
         showPassword: false,
         showConfirmPassword: false
     });
+    const [ errors, setErrors ] = React.useState<FormErrors[]>([]);
 
     const handleChange = ( event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
@@ -63,6 +70,28 @@ const RegisterForm = () => {
         event.preventDefault();
     };
 
+    const redirectAfterSuccessfulRegistration = () => {
+        navigate("/dashboard");
+    }
+
+    const submitRegistrationForm = (event: React.FormEvent, oneOrganizer: RegisterOrganizer, successCallback: Function ) => {
+        event.preventDefault();
+        axios.post( 'http://localhost:8000/api/organizers/register', oneOrganizer )
+            .then( () => successCallback() )
+            .catch( errors => {
+                console.log(errors.response);
+                const errorResponse = errors.response.data.errors;
+                const errorList: FormErrors[] = [];
+                for( const key of Object.keys(errorResponse)){
+                    errorList.push({
+                        path: errorResponse[key].path,
+                        message: errorResponse[key].message
+                    })
+                }
+                setErrors(errorList);
+            });
+    };
+
     return (
     <Box
         style={ boxStyle }
@@ -72,7 +101,7 @@ const RegisterForm = () => {
     }}
         noValidate
         autoComplete="off"
-        onSubmit={(event: React.FormEvent) => {event.preventDefault(); console.log("Submitted")}}>
+        onSubmit={(event: React.FormEvent) => submitRegistrationForm(event, oneOrganizer, redirectAfterSuccessfulRegistration) }>
             <h1>Register as Organizer</h1>
     <TextField
     required
