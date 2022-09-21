@@ -1,7 +1,9 @@
 import React from 'react'
-import { TextField, Box, Input, MenuItem, Slider, Typography, Tooltip, SliderValueLabelProps, FormHelperText, Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
+import { TextField, Box, Input, MenuItem, Slider, Typography, Tooltip, SliderValueLabelProps, FormHelperText, Accordion, AccordionDetails, AccordionSummary, TableContainer, Table, TableRow, TableHead,TableCell, tableCellClasses, TableBody, styled, Paper } from '@mui/material';
+import { positions } from '@mui/system';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
+//===========All Styling Content======
 const boxStyle = {
     background: 'rgba(200, 200, 200)',
     width: '60%',
@@ -17,6 +19,14 @@ const splitForm = {
 const formSide = {
     width: '90%'
 }
+const tableStyle={
+    width: '60%',
+    margin: '0px 20%',
+    zIndex: ''
+}
+const rowStyle = {
+    height: '20px'
+}
 const submitStyle ={
     background: 'gray',
     width: '100px',
@@ -25,6 +35,17 @@ const submitStyle ={
     margin: '20px 5px',
     postion: 'relative'
 }
+
+//=======Form intefaces=============
+interface User{
+    firstName: string;
+    lastName: string;
+    email: string;
+}
+
+
+
+//=========Form Funtions==============
 function ValueLabelComponent(props: SliderValueLabelProps) {
     const { children, value } = props;
 
@@ -34,15 +55,40 @@ function ValueLabelComponent(props: SliderValueLabelProps) {
         </Tooltip>
     );
     }
+
+//========Form Sub-Components========
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+    },
+    }));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+        '&:nth-of-type(odd)': {
+        backgroundColor: theme.palette.action.hover,
+        },
+        // hide last border
+        '&:last-child td, &:last-child th': {
+        border: 0,
+        }
+    }));
+
+
+// =======Actual Form component Starts Here=============
+
 const EventForm = (props: any) => {
     const { title, btn } = props;
-    // const users = [
-    //     { name: 'Jake Riler', email: 'jr@gmail.com'},
-    //     { name: 'Ben Brunton', email: 'bb@gmail.com'},
-    //     { name: 'Anjela Sanches', email: 'as@gmail.com'},
-    //     { name: 'Naile Grunich', email: 'ng@gmail.com'},
-    //     { name: 'Ernie Wontred', email: 'ew@gmail.com'}
-    // ]
+    const users: User[] = [
+        { firstName: 'Jake', lastName:'Riler', email: 'jr@gmail.com'},
+        { firstName: 'Ben', lastName:'Brunton', email: 'bb@gmail.com'},
+        { firstName: 'Anjela', lastName:'Sanches', email: 'as@gmail.com'},
+        { firstName: 'Naile', lastName:'Grunich', email: 'ng@gmail.com'},
+        { firstName: 'Ernie',  lastName:'Wontred', email: 'ew@gmail.com'}
+    ]
 
     return (
     <Box
@@ -212,9 +258,28 @@ const EventForm = (props: any) => {
                         </Typography>
                     </AccordionDetails>
                 </Accordion>
-                {/* { users.map((user, idx) => { return <>
-                <p key={idx}>{user}</p>
-                </>})} */}
+                <br/>
+                
+                <Paper sx={{ width: '60%', margin: '0px 20%', overflow: 'scroll' }}>
+                <TableContainer sx={{ maxHeight: 220 }}>
+                <Table stickyHeader sx={{ minWidth: 400 }} aria-label="customized table">
+                    <TableHead>
+                        <TableRow style={rowStyle}>
+                            <StyledTableCell>Users Going: </StyledTableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    { users.map((user: User, idx: number) => (
+                        <StyledTableRow style={rowStyle} key={idx}>
+                            <StyledTableCell component="th" scope="row">
+                                {user.firstName}{user.lastName} ({user.email})
+                            </StyledTableCell>
+                            </StyledTableRow>
+                    ))}
+                    </TableBody>
+                </Table>
+                </TableContainer>
+                </Paper>
             </>
             </div>
         </div>
