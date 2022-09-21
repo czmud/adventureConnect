@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom'
 import { TextField, Input, Box, FormControl, IconButton, OutlinedInput, InputLabel, InputAdornment, FormHelperText } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/Visibility'
-
+import { RegisterOrganizer } from '../../models/RegisterOrganizer.model'
+import axios from 'axios';
+axios.defaults.withCredentials = true;
 
 const boxStyle = {
     background: 'rgba(200, 200, 200)',
@@ -20,13 +22,31 @@ const submitStyle ={
     margin: '20px 0px'
 }
 
+type Action = {
+    type: string, payload: string
+}
+
+function reducer( oneOrganizer: RegisterOrganizer, action: Action ){
+    return {
+        ...oneOrganizer,
+        [action.type]: action.payload
+    };
+}
+
 const RegisterForm = () => {
+    const [oneOrganizer, dispatch] = React.useReducer( reducer, new RegisterOrganizer() );
     const [values, setValues] = React.useState<any>({
-        password: '',
         showPassword: false,
-        confirmPassword: '',
         showConfirmPassword: false
     });
+
+    const handleChange = ( event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        dispatch({
+            type: name,
+            payload: value
+        })
+    }
     
     const handleClickShowPassword = () => {
         setValues({...values,
@@ -58,6 +78,8 @@ const RegisterForm = () => {
     required
     id="outlined-name"
     label="First Name"
+    name="firstName"
+    onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event)}
     placeholder="Placeholder"
     helperText="Required: 2+ Characters!"
     /><br/>
@@ -66,6 +88,8 @@ const RegisterForm = () => {
     required
     id="outlined-name"
     label="Last Name"
+    name="lastName"
+    onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event)}
     helperText="Required: 2+ Characters!"
     /><br/>
 
@@ -74,6 +98,8 @@ const RegisterForm = () => {
     id="outlined-name"
     label="Email"
     type='email'
+    name="email"
+    onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event)}
     helperText="Required: Valid email"
     /><br/>
 
@@ -82,7 +108,8 @@ const RegisterForm = () => {
         <OutlinedInput
             id="outlined-adornment-password"
             type={values.showPassword ? 'text' : 'password'}
-            
+            name="password"
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event)}
             endAdornment={
             <InputAdornment position="end">
                 <IconButton
@@ -105,7 +132,8 @@ const RegisterForm = () => {
         <OutlinedInput
             id="outlined-adornment-password"
             type={values.showConfirmPassword ? 'text' : 'password'}
-            
+            name="confirmPassword"
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event)}
             endAdornment={
             <InputAdornment position="end">
                 <IconButton
