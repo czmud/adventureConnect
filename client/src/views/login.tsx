@@ -1,8 +1,7 @@
 import React from 'react'
-import HeaderBar from './headerBar'
+import HeaderBar from '../components/HeaderBar'
 import Background from '../images/camoCollage.png'
 import LoginForm from '../components/LoginForm'
-
 const imageStyle ={
     height: '1200px',
     width: '100%',
@@ -13,7 +12,7 @@ const imageStyle ={
     opacity: '75%'
 }
 
-const login = () => {
+const Login = () => {
     return (<>
     <HeaderBar title='Login' btnTitle='Home' btnRoute=''/>
     <img style={ imageStyle } alt='background camo' src={ Background }/>
@@ -21,4 +20,4 @@ const login = () => {
     </>)
 }
 
-export default login
+export default Login

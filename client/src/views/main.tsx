@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import HeaderBar from './headerBar';
+import HeaderBar from '../components/HeaderBar';
 import Background from '../images/giphy1.gif'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';

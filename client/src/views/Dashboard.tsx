@@ -1,5 +1,5 @@
 import * as React from 'react';
-import HeaderBar from './headerBar';
+import HeaderBar from '../components/HeaderBar';
 
 import { Link } from 'react-router-dom'
 import Table from '@mui/material/Table';
