@@ -1,7 +1,8 @@
-import React from 'react'
-import { TextField, Box, Input, MenuItem, Slider, Typography, Tooltip, SliderValueLabelProps, FormHelperText, Accordion, AccordionDetails, AccordionSummary, TableContainer, Table, TableRow, TableHead,TableCell, tableCellClasses, TableBody, styled, Paper } from '@mui/material';
+import React, {useState} from 'react'
+import { TextField, Box, Input, MenuItem, Slider, Typography, Tooltip, SliderValueLabelProps, FormHelperText, Accordion, AccordionDetails, AccordionSummary, TableContainer, Table, TableRow, TableHead,TableCell, tableCellClasses, TableBody, styled, Paper, OutlinedInput, FormControl, Select, InputLabel } from '@mui/material';
 import { positions } from '@mui/system';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { createRoot } from 'react-dom/client';
 
 //===========All Styling Content======
 const boxStyle = {
@@ -17,16 +18,10 @@ const splitForm = {
     justifyContent: 'space-around'
 }
 const formSide = {
-    width: '90%'
+    width: '90%',
+    positions: 'relative'
 }
-const tableStyle={
-    width: '60%',
-    margin: '0px 20%',
-    zIndex: ''
-}
-const rowStyle = {
-    height: '20px'
-}
+
 const submitStyle ={
     background: 'gray',
     width: '100px',
@@ -36,13 +31,60 @@ const submitStyle ={
     postion: 'relative'
 }
 
-//=======Form intefaces=============
-interface User{
-    firstName: string;
-    lastName: string;
-    email: string;
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+        },
+    },
+    };
+
+//=======Form Classes=============
+class Event{
+    eventName: string;
+    eventDescription: string;
+    eventType: string;
+    eventDate: '';
+    eventIntensity: number;
+    eventOrganizer: Organizer;
+    eventUsers: User[]
+
+    constructor(eventName: string, eventDescription: string, eventType: string, eventDate: '', eventIntensity: number, eventOrganizer: Organizer, eventUsers: User[]){
+        this.eventName = eventName;
+        this.eventDescription = eventDescription;
+        this.eventType = eventType;
+        this.eventDate = eventDate;
+        this.eventIntensity = eventIntensity;
+        this.eventOrganizer = eventOrganizer;
+        this.eventUsers = eventUsers;
+    }
 }
 
+
+class Organizer{
+    organizerFirstName: string;
+    organizerLastName: string;
+    organizerEmail: string;
+    constructor(organizerFirstName: string, organizerLastName: string, organizerEmail: string){
+    this.organizerFirstName= organizerFirstName;
+    this.organizerLastName= organizerLastName;
+    this.organizerEmail= organizerEmail;
+    }
+}
+
+class User{
+    userFirstName: string;
+    userLastName: string;
+    userEmail: string;
+    constructor(userFirstName: string, userLastName: string, userEmail: string){
+    this.userFirstName= userFirstName;
+    this.userLastName= userLastName;
+    this.userEmail= userEmail;
+    }
+}
 
 
 //=========Form Funtions==============
@@ -79,16 +121,65 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 // =======Actual Form component Starts Here=============
+const users: User[] = [
+    
+]
+
+const types = ['Hiking', 'Back Packing', 'Climbing', 'Camping', 'Rafting', 'Boating', 'Extreme', 'Sports']
+
 
 const EventForm = (props: any) => {
-    const { title, btn } = props;
-    const users: User[] = [
-        { firstName: 'Jake', lastName:'Riler', email: 'jr@gmail.com'},
-        { firstName: 'Ben', lastName:'Brunton', email: 'bb@gmail.com'},
-        { firstName: 'Anjela', lastName:'Sanches', email: 'as@gmail.com'},
-        { firstName: 'Naile', lastName:'Grunich', email: 'ng@gmail.com'},
-        { firstName: 'Ernie',  lastName:'Wontred', email: 'ew@gmail.com'}
-    ]
+    const { title, btn, event, creator, onSubmit } = props;
+    
+    const organizer: Organizer = {
+        organizerFirstName: creator.organizerFirstName,
+        organizerLastName: creator.organizerLastName,
+        organizerEmail: creator.organizerEmail
+    }
+    const thisEvent =  event || new Event('','','','', 1, organizer, users);
+
+    const [eventName, setEventName] = useState(thisEvent.eventName);
+    const onNameChange = (e: any) => {
+        setEventName(e.target.value);
+        console.log(eventName);
+    }
+
+    const [eventDescription, setEventDescription] = useState(thisEvent.eventDescription);
+    const onDescriptionChange = (e: any) => {
+        setEventDescription(e.target.value)
+    }
+    
+    const [eventType, setEventType] = useState(thisEvent.eventType);
+    const onTypeChange = (e: any) => {
+        setEventType(e.target.value)
+    }
+
+    const [eventDate, setEventDate] = useState(thisEvent.eventDate);
+    const onDateChange = (e: any) => {
+        setEventDate(e.target.value)
+    }
+
+    const [eventIntensity, setEventIntensity] = useState(thisEvent.eventIntensity);
+    const onIntensityChange = (e: any) => {
+        setEventIntensity(e.target.value)
+    }
+
+    const [eventUsers, setEventUsers] = useState(thisEvent.eventUsers);
+    const onNewUser = (e: any) => {
+        setEventUsers([...eventUsers, e.target.value])
+    }
+    
+    const submitHandler = () => {
+        thisEvent.eventName = eventName;
+        thisEvent.eventDescription = eventDescription;
+        thisEvent.eventType = eventType;
+        thisEvent.eventDate = eventDate;
+        thisEvent.eventIntensity = eventIntensity;
+        thisEvent.users = eventUsers;
+        onSubmit(thisEvent);
+    }
+
+
 
     return (
     <Box
@@ -99,14 +190,15 @@ const EventForm = (props: any) => {
     }}
     noValidate
     autoComplete="off"
-    onSubmit={(e) => {e.preventDefault(); console.log("Submitted")}}>
+    onSubmit={(e) => {e.preventDefault(); submitHandler() }}>
         <h1>{ title }</h1>
         <div style={ splitForm }>
             <div style={ formSide }>
                 <TextField
                 required
                 fullWidth
-                defaultValue="props.eventName"
+                value={eventName}
+                onChange = { onNameChange }
                 id="outlined-name"
                 label="Event Name"
                 InputLabelProps={{
@@ -120,7 +212,8 @@ const EventForm = (props: any) => {
                 <TextField
                 required
                 fullWidth
-                defaultValue="props.description"
+                value={eventDescription}
+                onChange={ onDescriptionChange }
                 id="outlined-multiline-static"
                 InputLabelProps={{
                     shrink: true
@@ -135,6 +228,8 @@ const EventForm = (props: any) => {
                 <TextField
                 required
                 fullWidth
+                value={ eventDate }
+                onChange={ onDateChange }
                 id="outlined-name"
                 type="datetime-local"
                 InputLabelProps={{
@@ -145,32 +240,44 @@ const EventForm = (props: any) => {
                 />
                 <br/><br/><br/>
 
-                <TextField
-                required
-                fullWidth
-                id="outlined-select-currency"
-                select
-                label="Select"
-                defaultValue='Trip Type'
-                helperText="Please select the Type of Event"
+                <FormControl sx={{ m: 1, width: 250, mt: 1 }}>
+                    <InputLabel
+                    variant="standard"
+                    htmlFor="native-select">Select Event Type</InputLabel>
+                    <Select
+                    displayEmpty
+                    value={ eventType }
+                    onChange={ onTypeChange }
+                    input={<OutlinedInput />}
+                    renderValue={(selected) => {
+                        return selected
+                    }}
+                    MenuProps={MenuProps}
+                    inputProps={{ 'aria-label': 'Without label' }}
                 >
-                    <MenuItem >Hiking</MenuItem>
-                    <MenuItem >BackPacking</MenuItem>
-                    <MenuItem >Climbing</MenuItem>
-                    <MenuItem >Camping</MenuItem>
-                    <MenuItem >Rafting</MenuItem>
-                    <MenuItem >Boating</MenuItem>
-                    <MenuItem >Extreme Sports</MenuItem>
-                </TextField>
+                        <MenuItem disabled value="">
+                        <em>Placeholder</em>
+                        </MenuItem>
+                    {types.map((name, idx) => (
+                        <MenuItem
+                        key={idx}
+                        value={name}
+                        >
+                            {name}
+                        </MenuItem>
+                ))}
+                    </Select>
+                </FormControl>
                 <br/><br/><br/>
+
             </div>
             <div style={ formSide }>
-                <>
                 <Box sx={{ m: 3 }}>
                     <Typography gutterBottom align="left">Intensity Rating</Typography>
                     <Slider
                     aria-label="Intensity Rating"
-                    defaultValue={1}
+                    value={ eventIntensity }
+                    onChange={ onIntensityChange }
                     valueLabelDisplay="auto"
                     step={1}
                     marks
@@ -200,7 +307,7 @@ const EventForm = (props: any) => {
                             required
                             id="outlined-name"
                             label="Organize Name"
-                            value='{Organizer.first + .last}'
+                            value={""+thisEvent.eventOrganizer.organizerFirstName+ ' '+ thisEvent.eventOrganizer.organizerLastName}
                             InputProps={{
                                 readOnly: true,
                             }}
@@ -211,7 +318,7 @@ const EventForm = (props: any) => {
                             id="outlined-name"
                             label="Oraganizer Email"
                             type='email'
-                            value="{Organizer.email}"
+                            value={thisEvent.eventOrganizer.organizerEmail}
                             InputProps={{
                                 readOnly: true,
                             }}
@@ -220,7 +327,7 @@ const EventForm = (props: any) => {
                     </AccordionDetails>
                 </Accordion>
                 <br/>
-                <Accordion>
+                <Accordion sx={{zIndex: '2'}}>
                     <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
@@ -230,6 +337,16 @@ const EventForm = (props: any) => {
                     </AccordionSummary>
                     <AccordionDetails>
                         <Typography>
+                        <Box
+                            style={ boxStyle }
+                            component="form"
+                            sx={{
+                            '& .MuiTextField-root': { m: 1, width: '25ch' },
+                            }}
+                            noValidate
+                            autoComplete="off"
+                            onSubmit={e => {e.preventDefault(); onNewUser(e)}}>
+                            
                             <TextField
                             id="outlined-name"
                             label="First Name"
@@ -255,32 +372,37 @@ const EventForm = (props: any) => {
                             <br/>
 
                             <Input style={ submitStyle } type='submit' value='Add New'/>
+                        </Box>
                         </Typography>
                     </AccordionDetails>
                 </Accordion>
-                <br/>
+                <br/><br/><br/>
                 
-                <Paper sx={{ width: '60%', margin: '0px 20%', overflow: 'scroll' }}>
-                <TableContainer sx={{ maxHeight: 220 }}>
-                <Table stickyHeader sx={{ minWidth: 400 }} aria-label="customized table">
+                <Paper sx={{ width: '70%', margin: '0px 15%', overflow: 'scroll', postions: 'absolute'}}>
+                <TableContainer sx={{ maxHeight: 160 }}>
+                <Table size='small' stickyHeader sx={{ minWidth: 400 }} aria-label="customized table">
                     <TableHead>
-                        <TableRow style={rowStyle}>
+                        <TableRow>
                             <StyledTableCell>Users Going: </StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                    { users.map((user: User, idx: number) => (
-                        <StyledTableRow style={rowStyle} key={idx}>
+                    { thisEvent.users ? 
+                    thisEvent.users.map((user: User, idx: number) => (
+                        <StyledTableRow key={idx}>
                             <StyledTableCell component="th" scope="row">
-                                {user.firstName}{user.lastName} ({user.email})
+                                {user.userFirstName}{user.userLastName} ({user.userEmail})
                             </StyledTableCell>
-                            </StyledTableRow>
-                    ))}
+                        </StyledTableRow>
+                    )): <StyledTableRow>
+                            <StyledTableCell component="th" scope="row">
+                                No users yet
+                            </StyledTableCell>
+                        </StyledTableRow>}
                     </TableBody>
                 </Table>
                 </TableContainer>
                 </Paper>
-            </>
             </div>
         </div>
 
