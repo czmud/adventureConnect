@@ -23,7 +23,7 @@ export const createNewOrganizer = (req: Request, res: Response) => {
             const organizerToken = jwt.sign({
                 id: newlyCreatedOrganizer._id
             }, process.env.SECRET_KEY!);
-
+            
             res        
                 .cookie("organizerToken", organizerToken, {httpOnly: true})  
                 .json({ msg: "success!" });
@@ -49,17 +49,23 @@ export const logOrganizerIn = async(req: Request, res: Response) => {
     const organizer = await Organizer.findOne({ email: req.body.email })
 
     if( organizer === null ){
-        return res.sendStatus(400);
+        return res.status(400).json({errors: { email: {
+            path: "email",
+            message: "Account for this email does not exist"
+        }}});
     }
 
     const passwordIsCorrect: boolean = await bcrypt.compare(req.body.password, organizer.passwordHash );
 
     if( !passwordIsCorrect ){
-        return res.sendStatus(400);
+        return res.status(400).json({errors: { password: {
+            path: "password",
+            message: "Incorrect password"
+        }}});
     }
 
     const organizerToken = jwt.sign({
-        id: organizer.id
+        id: organizer._id
     }, process.env.SECRET_KEY!);
 
     res
