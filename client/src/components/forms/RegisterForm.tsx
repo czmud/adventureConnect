@@ -52,7 +52,7 @@ const RegisterForm = () => {
     }}
         noValidate
         autoComplete="off"
-        onSubmit={(e) => {e.preventDefault(); console.log("Submitted")}}>
+        onSubmit={(event: React.FormEvent) => {event.preventDefault(); console.log("Submitted")}}>
             <h1>Register as Organizer</h1>
     <TextField
     required
