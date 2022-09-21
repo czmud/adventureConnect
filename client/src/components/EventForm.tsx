@@ -17,7 +17,6 @@ const splitForm = {
 const formSide = {
     width: '90%'
 }
-
 const submitStyle ={
     background: 'gray',
     width: '100px',
@@ -37,13 +36,13 @@ function ValueLabelComponent(props: SliderValueLabelProps) {
     }
 const EventForm = (props: any) => {
     const { title, btn } = props;
-    const users = [
-        { name: 'Jake Riler', email: 'jr@gmail.com'},
-        { name: 'Ben Brunton', email: 'bb@gmail.com'},
-        { name: 'Anjela Sanches', email: 'as@gmail.com'},
-        { name: 'Naile Grunich', email: 'ng@gmail.com'},
-        { name: 'Ernie Wontred', email: 'ew@gmail.com'}
-    ]
+    // const users = [
+    //     { name: 'Jake Riler', email: 'jr@gmail.com'},
+    //     { name: 'Ben Brunton', email: 'bb@gmail.com'},
+    //     { name: 'Anjela Sanches', email: 'as@gmail.com'},
+    //     { name: 'Naile Grunich', email: 'ng@gmail.com'},
+    //     { name: 'Ernie Wontred', email: 'ew@gmail.com'}
+    // ]
 
     return (
     <Box
@@ -213,9 +212,9 @@ const EventForm = (props: any) => {
                         </Typography>
                     </AccordionDetails>
                 </Accordion>
-                { users.map((user, idx) => { return <>
-                    <p key={idx}>{user}</p>
-                </>})}
+                {/* { users.map((user, idx) => { return <>
+                <p key={idx}>{user}</p>
+                </>})} */}
             </>
             </div>
         </div>
