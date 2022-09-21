@@ -22,7 +22,7 @@ const submitStyle ={
     margin: '20px 0px'
 }
 
-interface LoginErrors{
+interface FormErrors{
     path: string;
     message: string;
 }
@@ -42,7 +42,7 @@ const LoginForm = () => {
     const navigate = useNavigate();
     const [oneOrganizer, dispatch] = React.useReducer( reducer, new LoginOrganizer());
     const [showPassword, setShowPassword] = React.useState<boolean>(false);
-    const [ errors, setErrors ] = React.useState<LoginErrors[]>([]);
+    const [ errors, setErrors ] = React.useState<FormErrors[]>([]);
 
     const handleChange = ( event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
@@ -70,7 +70,7 @@ const LoginForm = () => {
             .then( () => successCallback())
             .catch( errors => {
                 const errorResponse = errors.response.data.errors;
-                const errorList: LoginErrors[] = [];
+                const errorList: FormErrors[] = [];
                 for( const key of Object.keys(errorResponse)){
                     errorList.push({
                         path: errorResponse[key].path,
