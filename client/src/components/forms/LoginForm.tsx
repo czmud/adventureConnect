@@ -69,7 +69,6 @@ const LoginForm = () => {
         axios.post( 'http://localhost:8000/api/organizers/login', oneOrganizer )
             .then( () => successCallback())
             .catch( errors => {
-                console.log(errors);
                 const errorResponse = errors.response.data.errors;
                 const errorList: LoginErrors[] = [];
                 for( const key of Object.keys(errorResponse)){
