@@ -1,6 +1,6 @@
 import React from 'react'
 import HeaderBar from '../components/HeaderBar'
-import EventDisplay from './EventDisplay'
+import EventDisplay from '../components/EventDisplay'
 
 const EventPage = () => {
     return (<>
