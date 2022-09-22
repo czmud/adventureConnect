@@ -1,4 +1,4 @@
-import React, {ChangeEvent, ReactNode, SyntheticEvent, useState} from 'react'
+import React, { ReactNode, SyntheticEvent, useState} from 'react'
 import { TextField, Box, Input, MenuItem, Slider, Typography, Tooltip, SliderValueLabelProps, FormHelperText, Accordion, AccordionDetails, AccordionSummary, TableContainer, Table, TableRow, TableHead,TableCell, tableCellClasses, TableBody, styled, Paper, OutlinedInput, FormControl, Select, InputLabel, SelectChangeEvent } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EventModel from '../../models/EventModel'
@@ -19,6 +19,7 @@ const splitForm = {
     justifyContent: 'space-around'
 }
 const formSide = {
+
     width: '90%',
     positions: 'relative'
 }
@@ -44,6 +45,7 @@ const MenuProps = {
     };
 
 //========= Form Funtional ==============
+
 function ValueLabelComponent(props: SliderValueLabelProps) {
     const { children, value } = props;
 
@@ -53,6 +55,7 @@ function ValueLabelComponent(props: SliderValueLabelProps) {
         </Tooltip>
     );
     }
+
 
 //========Form Sub-Components========
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -154,8 +157,6 @@ const EventForm = (props: EventFormProps) => {
         submitCallback(thisEvent);
     }
 
-
-
     return (
     <Box
     style={ boxStyle }
@@ -165,15 +166,19 @@ const EventForm = (props: EventFormProps) => {
     }}
     noValidate
     autoComplete="off"
+
     onSubmit={(e) => {e.preventDefault(); submitHandler() }}>
+
         <h1>{ title }</h1>
         <div style={ splitForm }>
             <div style={ formSide }>
                 <TextField
                 required
                 fullWidth
+
                 value={eventName}
                 onChange = { onNameChange }
+
                 id="outlined-name"
                 label="Event Name"
                 InputLabelProps={{
@@ -187,8 +192,10 @@ const EventForm = (props: EventFormProps) => {
                 <TextField
                 required
                 fullWidth
+
                 value={eventDescription}
                 onChange={ onDescriptionChange }
+
                 id="outlined-multiline-static"
                 InputLabelProps={{
                     shrink: true
@@ -203,8 +210,10 @@ const EventForm = (props: EventFormProps) => {
                 <TextField
                 required
                 fullWidth
+
                 value={ eventDate }
                 onChange={ onDateChange }
+
                 id="outlined-name"
                 type="datetime-local"
                 InputLabelProps={{
@@ -214,6 +223,7 @@ const EventForm = (props: EventFormProps) => {
                 helperText="Required"
                 />
                 <br/><br/><br/>
+
 
                 <FormControl sx={{ m: 1, width: 250, mt: 1 }}>
                     <InputLabel
@@ -247,13 +257,13 @@ const EventForm = (props: EventFormProps) => {
 
             </div>
             <div style={ formSide }>
+
                 <Box sx={{ m: 3 }}>
                     <Typography gutterBottom align="left">Intensity Rating</Typography>
                     <Slider
                     aria-label="Intensity Rating"
                     value={ eventIntensity }
                     onChangeCommitted={(e: Event | SyntheticEvent<Element, Event>, value: number | Array<number>) => onIntensityChange(e, value) }
-                    
                     valueLabelDisplay="auto"
                     step={1}
                     marks
@@ -283,7 +293,9 @@ const EventForm = (props: EventFormProps) => {
                             required
                             id="outlined-name"
                             label="Organize Name"
+
                             value={""+thisEvent.eventOrganizer.organizerFirstName+ ' '+ thisEvent.eventOrganizer.organizerLastName}
+
                             InputProps={{
                                 readOnly: true,
                             }}
@@ -294,7 +306,9 @@ const EventForm = (props: EventFormProps) => {
                             id="outlined-name"
                             label="Oraganizer Email"
                             type='email'
+
                             value={thisEvent.eventOrganizer.organizerEmail}
+
                             InputProps={{
                                 readOnly: true,
                             }}
@@ -303,7 +317,9 @@ const EventForm = (props: EventFormProps) => {
                     </AccordionDetails>
                 </Accordion>
                 <br/>
+
                 <Accordion sx={{zIndex: '2'}}>
+
                     <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
@@ -313,6 +329,7 @@ const EventForm = (props: EventFormProps) => {
                     </AccordionSummary>
                     <AccordionDetails>
                         <Typography>
+
                         <Box
                             style={ boxStyle }
                             component="form"
@@ -322,7 +339,7 @@ const EventForm = (props: EventFormProps) => {
                             noValidate
                             autoComplete="off"
                             onSubmit={(e: React.FormEvent) => {e.preventDefault(); onNewUser(e) }}>
-                            
+                        
                             <TextField
                             id="outlined-name"
                             label="First Name"
@@ -354,6 +371,7 @@ const EventForm = (props: EventFormProps) => {
                             <br/>
 
                             <Input style={ submitStyle } type='submit' value='Add New'/>
+
                         </Box>
                         </Typography>
                     </AccordionDetails>
@@ -385,6 +403,7 @@ const EventForm = (props: EventFormProps) => {
                 </Table>
                 </TableContainer>
                 </Paper>
+
             </div>
         </div>
 
