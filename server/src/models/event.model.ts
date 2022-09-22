@@ -12,26 +12,31 @@ const EventSchema = new mongoose.Schema({
         trim: true,
         minLength: [
             2,
-            'event name must be at least 2 characters long'
+            'Event name must be at least 2 characters long'
         ]},
     description: {
         type: String,
-        required: [true, 'description is required']
+        required: [true, 'Event description is required']
     },
     type: {
         type: String,
         trim: true,
-        required: [true, 'trip type is required']
+        required: [true, 'Event type is required']
         },
+    date: {
+        type: Date,
+        required: [true, 'Event date is required'],
+        min: [new Date(), 'Event cannot be scheduled before today']
+    },
     intensity: {
         type: Number,
         min: [
             1,
-            'intensity must be at least 1 star'
+            'Event intensity must be at least 1 star'
         ],
         max: [
             5,
-            'intensity must be at most 5 stars'
+            'Event intensity must be at most 5 stars'
         ]},
     organizer: {
         type: EventOrganizerSchema,
