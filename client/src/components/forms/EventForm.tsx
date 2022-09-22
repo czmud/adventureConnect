@@ -1,9 +1,9 @@
-import React, {useState} from 'react'
-import { TextField, Box, Input, MenuItem, Slider, Typography, Tooltip, SliderValueLabelProps, FormHelperText, Accordion, AccordionDetails, AccordionSummary, TableContainer, Table, TableRow, TableHead,TableCell, tableCellClasses, TableBody, styled, Paper, OutlinedInput, FormControl, Select, InputLabel } from '@mui/material';
+import React, {ChangeEvent, ReactNode, SyntheticEvent, useState} from 'react'
+import { TextField, Box, Input, MenuItem, Slider, Typography, Tooltip, SliderValueLabelProps, FormHelperText, Accordion, AccordionDetails, AccordionSummary, TableContainer, Table, TableRow, TableHead,TableCell, tableCellClasses, TableBody, styled, Paper, OutlinedInput, FormControl, Select, InputLabel, SelectChangeEvent } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Event from '../classes/Event'
-import Organizer from '../classes/Organizer'
-import User from '../classes/User'
+import EventModel from '../../models/EventModel'
+import Organizer from '../../models/Organizer'
+import User from '../../models/User'
 
 //===========All Styling Content======
 const boxStyle = {
@@ -79,8 +79,15 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 // ======= Actual Form component Starts Here =============
 const types = ['Hiking', 'Back Packing', 'Climbing', 'Camping', 'Rafting', 'Boating', 'Extreme', 'Sports']
 
+interface EventFormProps{
+    title: string;
+    btn: string;
+    event?: EventModel; // can use a '?' to mark option types in an interface (same as in classes/types etc.)
+    creator: Organizer;
+    submitCallback: Function;
+}
 
-const EventForm = (props: any) => {
+const EventForm = (props: EventFormProps) => {
     const { title, btn, event, creator, submitCallback } = props;
     
     const organizer: Organizer = {
@@ -88,37 +95,53 @@ const EventForm = (props: any) => {
         organizerLastName: creator.organizerLastName,
         organizerEmail: creator.organizerEmail
     }
-    const thisEvent =  event || new Event('','','', new Date(), 1, organizer, []);
+    const thisEvent =  event || new EventModel('','','', new Date(), 1, organizer, []);
 
     const [eventName, setEventName] = useState(thisEvent.eventName);
-    const onNameChange = (e: any) => {
+    const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEventName(e.target.value);
         console.log(eventName);
     }
 
     const [eventDescription, setEventDescription] = useState(thisEvent.eventDescription);
-    const onDescriptionChange = (e: any) => {
+    const onDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEventDescription(e.target.value)
     }
     
     const [eventType, setEventType] = useState(thisEvent.eventType);
-    const onTypeChange = (e: any) => {
+    const onTypeChange = (e: SelectChangeEvent<string>) => {
         setEventType(e.target.value)
     }
 
     const [eventDate, setEventDate] = useState(thisEvent.eventDate);
-    const onDateChange = (e: any) => {
-        setEventDate(e.target.value)
+    const onDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setEventDate(new Date(e.target.value))
     }
 
     const [eventIntensity, setEventIntensity] = useState(thisEvent.eventIntensity);
-    const onIntensityChange = (e: any) => {
-        setEventIntensity(e.target.value)
+    const onIntensityChange = (e: React.SyntheticEvent | Event, value: number | Array<number>) => {
+        if (typeof value !== 'number'){
+            value = value[0];
+        }
+        setEventIntensity(value)
     }
 
+    const [userFirstName, setUserFirstName] = useState('');
+    const onUserFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUserFirstName(e.target.value)
+    }
+    const [userLastName, setUserLastName] = useState('');
+    const onUserLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUserLastName(e.target.value)
+    }
+    const [userEmail, setUserEmail] = useState('');
+    const onUserEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUserEmail(e.target.value)
+    }
     const [eventUsers, setEventUsers] = useState(thisEvent.eventUsers);
-    const onNewUser = (e: any) => {
-        setEventUsers([...eventUsers, e.target.value])
+    const onNewUser = (e: React.FormEvent) => {
+        let newUser = new User(userFirstName, userLastName, userEmail)
+        setEventUsers([...eventUsers, newUser])
     }
     
     const submitHandler = () => {
@@ -127,7 +150,7 @@ const EventForm = (props: any) => {
         thisEvent.eventType = eventType;
         thisEvent.eventDate = eventDate;
         thisEvent.eventIntensity = eventIntensity;
-        thisEvent.users = eventUsers;
+        thisEvent.eventUsers = eventUsers;
         submitCallback(thisEvent);
     }
 
@@ -199,7 +222,7 @@ const EventForm = (props: any) => {
                     <Select
                     displayEmpty
                     value={ eventType }
-                    onChange={ onTypeChange }
+                    onChange= {(e: SelectChangeEvent<string>, child: ReactNode) => onTypeChange(e) }
                     input={<OutlinedInput />}
                     renderValue={(selected) => {
                         return selected
@@ -229,7 +252,8 @@ const EventForm = (props: any) => {
                     <Slider
                     aria-label="Intensity Rating"
                     value={ eventIntensity }
-                    onChange={ onIntensityChange }
+                    onChangeCommitted={(e: Event | SyntheticEvent<Element, Event>, value: number | Array<number>) => onIntensityChange(e, value) }
+                    
                     valueLabelDisplay="auto"
                     step={1}
                     marks
@@ -297,12 +321,14 @@ const EventForm = (props: any) => {
                             }}
                             noValidate
                             autoComplete="off"
-                            onSubmit={e => {e.preventDefault(); onNewUser(e)}}>
+                            onSubmit={(e: React.FormEvent) => {e.preventDefault(); onNewUser(e) }}>
                             
                             <TextField
                             id="outlined-name"
                             label="First Name"
                             placeholder="User's First"
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => onUserFirstNameChange(e) }
+                            value={userFirstName}
                             helperText="Required: 2+ Characters!"
                             />
                             <br/>
@@ -311,6 +337,8 @@ const EventForm = (props: any) => {
                             id="outlined-name
                             "
                             label="Last Name"
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => onUserLastNameChange(e) }
+                            value={userLastName}
                             helperText="Required: 2+ Characters!"
                             />
                             <br/>
@@ -318,6 +346,8 @@ const EventForm = (props: any) => {
                             <TextField
                             id="outlined-name"
                             label="Email"
+                            value={userEmail}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => onUserEmailChange(e) }
                             type='email'
                             helperText="Required: Valid email"
                             />
@@ -339,8 +369,8 @@ const EventForm = (props: any) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                    { thisEvent.users ? 
-                    thisEvent.users.map((user: User, idx: number) => (
+                    { thisEvent.eventUsers ? 
+                    thisEvent.eventUsers.map((user: User, idx: number) => (
                         <StyledTableRow key={idx}>
                             <StyledTableCell component="th" scope="row">
                                 {user.userFirstName}{user.userLastName} ({user.userEmail})

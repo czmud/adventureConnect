@@ -3,37 +3,44 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import EventForm from '../components/forms/EventForm'
 import HeaderBar from '../components/HeaderBar'
-import Organizer from '../models/Organizer'
 
-const CreateEvent = () => {
+const CreateEvent = (thisEvent: any) => {
     const nav = useNavigate();
-    
 
-//! ======== Needs Create Routes==============
-    const onCreate = (thisEvent: any) => {
+    const onCreate = () => {
         axios.post('', thisEvent)
             .then(res => {
 
                 nav('/dashboard');
             })
-            .catch(err => { })
+            .catch(err => {})
     }
 
 
 
     //!===============Just For Data Example========
+    class Organizer{
+        organizerFirstName: string;
+        organizerLastName: string;
+        organizerEmail: string;
+        constructor(organizerFirstName: string, organizerLastName: string, organizerEmail: string){
+        this.organizerFirstName= organizerFirstName;
+        this.organizerLastName= organizerLastName;
+        this.organizerEmail= organizerEmail;
+        }
+    }
     const organizer: Organizer = {
         organizerFirstName: 'Jesse',
         organizerLastName: 'Made',
         organizerEmail: 'This@Yea.gmail.com'
     }
-    //! ======== Adjust based on creator data after setting data routes up==========
+    //! ========Delete after setting data routes up==========
 
 
 
     return (<>
     <HeaderBar title='New events' btnTitle='Logout' btnRoute='logout'/>
-    <EventForm title='Create an Event' btn='Create' submitCallback={ onCreate } creator={ organizer }/>
+    <EventForm title='Create an Event' btn='Create' submitCallback={ onCreate } creator={ organizer } onSubmit={ onCreate }/>
     </>)
 }
 

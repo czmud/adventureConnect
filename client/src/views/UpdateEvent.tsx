@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
-import EventForm from '../components/EventForm'
+import EventForm from '../components/forms/EventForm'
 import HeaderBar from '../components/HeaderBar'
 const Event =  require('../classes/Event')
 

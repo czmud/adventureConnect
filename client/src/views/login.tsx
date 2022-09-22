@@ -1,7 +1,7 @@
 import React from 'react'
 import HeaderBar from '../components/HeaderBar'
 import Background from '../images/camoCollage.png'
-import LoginForm from '../components/LoginForm'
+import LoginForm from '../components/forms/LoginForm'
 const imageStyle ={
     height: '1200px',
     width: '100%',

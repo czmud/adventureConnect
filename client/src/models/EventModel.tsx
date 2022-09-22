@@ -1,7 +1,7 @@
 import Organizer from "./Organizer";
 import User from "./User";
 
-class Event{
+class EventModel{
     eventName: string;
     eventDescription: string;
     eventType: string;
@@ -20,4 +20,4 @@ class Event{
         this.eventUsers = eventUsers;
     }
 }
-export default Event
+export default EventModel

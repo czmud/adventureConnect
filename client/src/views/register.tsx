@@ -2,7 +2,7 @@ import React from 'react'
 
 import HeaderBar from '../components/HeaderBar'
 import Background from '../images/camoCollage.png'
-import RegisterForm from '../components/RegisterForm'
+import RegisterForm from '../components/forms/RegisterForm'
 
 const imageStyle ={
     height: '1200px',
