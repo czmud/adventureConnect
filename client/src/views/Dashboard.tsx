@@ -1,7 +1,6 @@
 import * as React from 'react';
 import HeaderBar from '../components/HeaderBar';
-
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -9,15 +8,18 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+
+import axios from 'axios';
+import DeleteButton from '../components/buttons/DeleteButton';
 import { LogoutButton } from '../components/buttons/LogoutButton';
 
 function createData(
     eventName: string,
-    type: string,
-    location: string,
-    date: string,
+    eventType: string,
+    eventIntensity: string,
+    eventDate: string,
 ) {
-    return { eventName, type, location, date };
+    return { eventName, eventType, eventIntensity, eventDate };
 }
 
 const rows = [
@@ -28,6 +30,7 @@ const rows = [
     createData('Bird Watching group', "Camping", 'Kalaloch Campground', '10-27-2022'),createData('Rest and Relax', 'River Floating', 'Snoqualmie River', '10-27-2022'),
     createData('Bird Watching group', "Camping", 'Kalaloch Campground', '10-27-2022'),createData('Rest and Relax', 'River Floating', 'Snoqualmie River', '10-27-2022'),
     createData('Bird Watching group', "Camping", 'Kalaloch Campground', '10-27-2022'),
+
 ];
 const tableStyle = {
     width: '90%',
@@ -54,19 +57,36 @@ const addStyle={
 
 
 const Dashboard = () => {
+    const nav = useNavigate();
+    const [allEvents, setAllEvents] = React.useState(Array<Event>);
+    const [loaded, setLoaded] = React.useState(true);
+
+    React.useEffect(() => {
+        axios.get('')
+            .then(res => {
+                
+            })
+            .catch(err => {
+
+            })
+    })
+
     return (<div >
     <HeaderBar title='Upcoming Events' btnTitle='Logout' btnRoute='logout'/>
-    <img alt='forrest' style={ imageStyle } src='https://imgs.search.brave.com/T-P-O4YLS_ZosnHvHNyjhmxz0JJTX3Eznw_i7qzqJOw/rs:fit:1200:1200:1/g:ce/aHR0cHM6Ly93YWxs/dXAubmV0L3dwLWNv/bnRlbnQvdXBsb2Fk/cy8yMDE2LzAyLzE4/LzI4NDY2Mi1wbGFu/dHMtbmF0dXJlLXJp/dmVyLWZvcmVzdC5q/cGc'></img>
-    <Link  to='/events/new' style={ addStyle }> + New Event</Link>
-    <TableContainer style={ tableStyle } component={Paper}>
+    <img alt='forrest' style={ imageStyle } src='https://imgs.search.brave.com/T-P-O4YLS_ZosnHvHNyjhmxz0JJTX3Eznw_i7qzqJOw/rs:fit:1200:1200:1/g:ce/aHR0cHM6Ly93YWxs/dXAubmV0L3dwLWNv/bnRlbnQvdXBsb2Fk/cy8yMDE2LzAyLzE4/LzI4NDY2Mi1wbGFu/dHMtbmF0dXJlLXJp/dmVyLWZvcmVzdC5q/cGc'/>
+    <Link  to='/event/new' style={ addStyle }> + New Event</Link>
+
+    {loaded && <TableContainer style={ tableStyle } component={Paper}>
+
         <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
             <TableRow>
             <TableCell><strong><h1>Event Name</h1></strong></TableCell>
             <TableCell align="right"><strong><h1>Type </h1></strong></TableCell>
-            <TableCell align="right"><strong><h1>Location</h1></strong>
+            <TableCell align="right"><strong><h1>Intensity</h1></strong>
             </TableCell>
             <TableCell align="right"><strong><h1>Date</h1></strong></TableCell>
+            <TableCell align="right"><strong><h1>Actions</h1></strong></TableCell>
             </TableRow>
         </TableHead>
         <TableBody>
@@ -78,15 +98,23 @@ const Dashboard = () => {
                 <TableCell component="th" scope="row">
                 {row.eventName}
                 </TableCell>
-                <TableCell align="right">{row.type}</TableCell>
-                <TableCell align="right">{row.location}</TableCell>
-                <TableCell align="right">{row.date}</TableCell>
+
+                <TableCell align="right">{row.eventType}</TableCell>
+                <TableCell align="right">{row.eventIntensity}</TableCell>
+                <TableCell align="right">{row.eventDate}</TableCell>
+                <TableCell align="right">
+                <button onClick= {() => nav('/event/update/'/*  + thisEvent._id  */)}></button> 
+                | 
+                <DeleteButton eventId=''/*  { thisEvent._id }  */ buttonName='Delete' successCallback=''/>
+
+                </TableCell>
+
             </TableRow>
             
             ))}
         </TableBody>
         </Table>
-    </TableContainer>
+    </TableContainer>}
     <LogoutButton></LogoutButton>
     </div>);
 }

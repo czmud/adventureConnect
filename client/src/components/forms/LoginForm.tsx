@@ -51,11 +51,17 @@ const LoginForm = () => {
             payload: value
         })
     }
+    const [values, setValues] = React.useState<any>({
+        password: '',
+        showPassword: false,
+    });
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword,);
+        setValues({...values,
+        showPassword: !values.showPassword,
+        });
     };
-
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
     };
@@ -110,6 +116,7 @@ const LoginForm = () => {
             type={showPassword ? 'text' : 'password'}
             name="password"
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event)}
+            
             endAdornment={
             <InputAdornment position="end">
                 <IconButton
