@@ -1,8 +1,9 @@
 import React, {useState} from 'react'
 import { TextField, Box, Input, MenuItem, Slider, Typography, Tooltip, SliderValueLabelProps, FormHelperText, Accordion, AccordionDetails, AccordionSummary, TableContainer, Table, TableRow, TableHead,TableCell, tableCellClasses, TableBody, styled, Paper, OutlinedInput, FormControl, Select, InputLabel } from '@mui/material';
-import { positions } from '@mui/system';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { createRoot } from 'react-dom/client';
+import Event from '../classes/Event'
+import Organizer from '../classes/Organizer'
+import User from '../classes/User'
 
 //===========All Styling Content======
 const boxStyle = {
@@ -42,52 +43,7 @@ const MenuProps = {
     },
     };
 
-//=======Form Classes=============
-class Event{
-    eventName: string;
-    eventDescription: string;
-    eventType: string;
-    eventDate: '';
-    eventIntensity: number;
-    eventOrganizer: Organizer;
-    eventUsers: User[]
-
-    constructor(eventName: string, eventDescription: string, eventType: string, eventDate: '', eventIntensity: number, eventOrganizer: Organizer, eventUsers: User[]){
-        this.eventName = eventName;
-        this.eventDescription = eventDescription;
-        this.eventType = eventType;
-        this.eventDate = eventDate;
-        this.eventIntensity = eventIntensity;
-        this.eventOrganizer = eventOrganizer;
-        this.eventUsers = eventUsers;
-    }
-}
-
-
-class Organizer{
-    organizerFirstName: string;
-    organizerLastName: string;
-    organizerEmail: string;
-    constructor(organizerFirstName: string, organizerLastName: string, organizerEmail: string){
-    this.organizerFirstName= organizerFirstName;
-    this.organizerLastName= organizerLastName;
-    this.organizerEmail= organizerEmail;
-    }
-}
-
-class User{
-    userFirstName: string;
-    userLastName: string;
-    userEmail: string;
-    constructor(userFirstName: string, userLastName: string, userEmail: string){
-    this.userFirstName= userFirstName;
-    this.userLastName= userLastName;
-    this.userEmail= userEmail;
-    }
-}
-
-
-//=========Form Funtions==============
+//========= Form Funtional ==============
 function ValueLabelComponent(props: SliderValueLabelProps) {
     const { children, value } = props;
 
@@ -120,23 +76,19 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     }));
 
 
-// =======Actual Form component Starts Here=============
-const users: User[] = [
-    
-]
-
+// ======= Actual Form component Starts Here =============
 const types = ['Hiking', 'Back Packing', 'Climbing', 'Camping', 'Rafting', 'Boating', 'Extreme', 'Sports']
 
 
 const EventForm = (props: any) => {
-    const { title, btn, event, creator, onSubmit } = props;
+    const { title, btn, event, creator, submitCallback } = props;
     
     const organizer: Organizer = {
         organizerFirstName: creator.organizerFirstName,
         organizerLastName: creator.organizerLastName,
         organizerEmail: creator.organizerEmail
     }
-    const thisEvent =  event || new Event('','','','', 1, organizer, users);
+    const thisEvent =  event || new Event('','','', new Date(), 1, organizer, []);
 
     const [eventName, setEventName] = useState(thisEvent.eventName);
     const onNameChange = (e: any) => {
@@ -176,7 +128,7 @@ const EventForm = (props: any) => {
         thisEvent.eventDate = eventDate;
         thisEvent.eventIntensity = eventIntensity;
         thisEvent.users = eventUsers;
-        onSubmit(thisEvent);
+        submitCallback(thisEvent);
     }
 
 
