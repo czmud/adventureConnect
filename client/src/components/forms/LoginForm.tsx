@@ -1,8 +1,11 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { TextField, Input, Box, FormControl, IconButton, OutlinedInput, InputLabel, InputAdornment, FormHelperText } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/Visibility'
+import { LoginOrganizer } from '../../models/LoginOrganizer.model'
+import axios from 'axios';
+axios.defaults.withCredentials = true;
 
 const boxStyle = {
     background: 'rgba(200, 200, 200)',
@@ -19,19 +22,69 @@ const submitStyle ={
     margin: '20px 0px'
 }
 
+interface FormErrors{
+    path: string;
+    message: string;
+}
+
+type Action = {
+    type: string, payload: string
+}
+
+function reducer( oneOrganizer: LoginOrganizer, action: Action ){
+    return {
+        ...oneOrganizer,
+        [action.type]: action.payload
+    };
+}
+
 const LoginForm = () => {
+    const navigate = useNavigate();
+    const [oneOrganizer, dispatch] = React.useReducer( reducer, new LoginOrganizer());
+    const [showPassword, setShowPassword] = React.useState<boolean>(false);
+    const [ errors, setErrors ] = React.useState<FormErrors[]>([]);
+
+    const handleChange = ( event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        dispatch({
+            type: name,
+            payload: value
+        })
+    }
     const [values, setValues] = React.useState<any>({
         password: '',
         showPassword: false,
     });
 
     const handleClickShowPassword = () => {
+        setShowPassword(!showPassword,);
         setValues({...values,
         showPassword: !values.showPassword,
         });
     };
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
+    };
+
+    const redirectAfterSuccessfulLogin = () => {
+        navigate("/dashboard");
+    }
+
+    const submitLoginForm = (event: React.FormEvent, oneOrganizer: LoginOrganizer, successCallback: Function) => {
+        event.preventDefault();
+        axios.post( 'http://localhost:8000/api/organizers/login', oneOrganizer )
+            .then( () => successCallback())
+            .catch( errors => {
+                const errorResponse = errors.response.data.errors;
+                const errorList: FormErrors[] = [];
+                for( const key of Object.keys(errorResponse)){
+                    errorList.push({
+                        path: errorResponse[key].path,
+                        message: errorResponse[key].message
+                    });
+                }
+                setErrors(errorList);
+            });
     };
 
     return (
@@ -43,7 +96,7 @@ const LoginForm = () => {
     }}
         noValidate
         autoComplete="off"
-        onSubmit={(e) => {e.preventDefault(); console.log("Submitted")}}>
+        onSubmit={ (event: React.FormEvent) => submitLoginForm(event, oneOrganizer, redirectAfterSuccessfulLogin)}>
             <h1>Organizer Login</h1>
 
         <TextField
@@ -51,6 +104,8 @@ const LoginForm = () => {
             id="outlined-name"
             label="Email"
             type='email'
+            name="email"
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event)}
             helperText="Required: Valid email"
         /><br/>
 
@@ -58,7 +113,9 @@ const LoginForm = () => {
         <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
         <OutlinedInput
             id="outlined-adornment-password"
-            type={values.showPassword ? 'text' : 'password'}
+            type={showPassword ? 'text' : 'password'}
+            name="password"
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event)}
             
             endAdornment={
             <InputAdornment position="end">
@@ -67,7 +124,7 @@ const LoginForm = () => {
                 onClick={handleClickShowPassword}
                 onMouseDown={handleMouseDownPassword}
                 edge="end">
-                {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
                 </InputAdornment>
             }

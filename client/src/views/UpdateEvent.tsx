@@ -3,14 +3,14 @@ import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
 import EventForm from '../components/forms/EventForm'
 import HeaderBar from '../components/HeaderBar'
-const Event =  require('../classes/Event')
+const EventModel =  require('../models/EventModel')
 
 
 
 
 const UpdateEvent = () => {
     const { id } = useParams();
-    const [thisEvent, setThisEvent] = useState(Event);
+    const [thisEvent, setThisEvent] = useState(EventModel);
     const [loaded, setLoaded] = useState(true);
     const [errors, setErrors] = React.useState(Array<any>);
     const nav = useNavigate();
