@@ -16,8 +16,6 @@ AllEventRoutes(app);
 import { AllOrganizerRoutes } from './src/routes/organizer.routes'
 AllOrganizerRoutes(app);
 
-console.log(process.env.SECRET_KEY);
-
 const server = app.listen(port, () =>
     console.log(`Server is locked and loaded on port ${port}!`)
 );

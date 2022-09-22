@@ -19,6 +19,7 @@ const splitForm = {
     justifyContent: 'space-around'
 }
 const formSide = {
+
     width: '90%',
     positions: 'relative'
 }
@@ -44,6 +45,7 @@ const MenuProps = {
     };
 
 //========= Form Funtional ==============
+
 function ValueLabelComponent(props: SliderValueLabelProps) {
     const { children, value } = props;
 
@@ -53,6 +55,7 @@ function ValueLabelComponent(props: SliderValueLabelProps) {
         </Tooltip>
     );
     }
+
 
 //========Form Sub-Components========
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -131,8 +134,6 @@ const EventForm = (props: any) => {
         submitCallback(thisEvent);
     }
 
-
-
     return (
     <Box
     style={ boxStyle }
@@ -142,15 +143,19 @@ const EventForm = (props: any) => {
     }}
     noValidate
     autoComplete="off"
+
     onSubmit={(e) => {e.preventDefault(); submitHandler() }}>
+
         <h1>{ title }</h1>
         <div style={ splitForm }>
             <div style={ formSide }>
                 <TextField
                 required
                 fullWidth
+
                 value={eventName}
                 onChange = { onNameChange }
+
                 id="outlined-name"
                 label="Event Name"
                 InputLabelProps={{
@@ -164,8 +169,10 @@ const EventForm = (props: any) => {
                 <TextField
                 required
                 fullWidth
+
                 value={eventDescription}
                 onChange={ onDescriptionChange }
+
                 id="outlined-multiline-static"
                 InputLabelProps={{
                     shrink: true
@@ -180,8 +187,10 @@ const EventForm = (props: any) => {
                 <TextField
                 required
                 fullWidth
+
                 value={ eventDate }
                 onChange={ onDateChange }
+
                 id="outlined-name"
                 type="datetime-local"
                 InputLabelProps={{
@@ -191,6 +200,7 @@ const EventForm = (props: any) => {
                 helperText="Required"
                 />
                 <br/><br/><br/>
+
 
                 <FormControl sx={{ m: 1, width: 250, mt: 1 }}>
                     <InputLabel
@@ -224,12 +234,15 @@ const EventForm = (props: any) => {
 
             </div>
             <div style={ formSide }>
+
                 <Box sx={{ m: 3 }}>
                     <Typography gutterBottom align="left">Intensity Rating</Typography>
                     <Slider
                     aria-label="Intensity Rating"
+
                     value={ eventIntensity }
                     onChange={ onIntensityChange }
+
                     valueLabelDisplay="auto"
                     step={1}
                     marks
@@ -259,7 +272,9 @@ const EventForm = (props: any) => {
                             required
                             id="outlined-name"
                             label="Organize Name"
+
                             value={""+thisEvent.eventOrganizer.organizerFirstName+ ' '+ thisEvent.eventOrganizer.organizerLastName}
+
                             InputProps={{
                                 readOnly: true,
                             }}
@@ -270,7 +285,9 @@ const EventForm = (props: any) => {
                             id="outlined-name"
                             label="Oraganizer Email"
                             type='email'
+
                             value={thisEvent.eventOrganizer.organizerEmail}
+
                             InputProps={{
                                 readOnly: true,
                             }}
@@ -279,7 +296,9 @@ const EventForm = (props: any) => {
                     </AccordionDetails>
                 </Accordion>
                 <br/>
+
                 <Accordion sx={{zIndex: '2'}}>
+
                     <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
@@ -289,6 +308,7 @@ const EventForm = (props: any) => {
                     </AccordionSummary>
                     <AccordionDetails>
                         <Typography>
+
                         <Box
                             style={ boxStyle }
                             component="form"
@@ -298,7 +318,7 @@ const EventForm = (props: any) => {
                             noValidate
                             autoComplete="off"
                             onSubmit={e => {e.preventDefault(); onNewUser(e)}}>
-                            
+
                             <TextField
                             id="outlined-name"
                             label="First Name"
@@ -324,6 +344,7 @@ const EventForm = (props: any) => {
                             <br/>
 
                             <Input style={ submitStyle } type='submit' value='Add New'/>
+
                         </Box>
                         </Typography>
                     </AccordionDetails>
@@ -355,6 +376,7 @@ const EventForm = (props: any) => {
                 </Table>
                 </TableContainer>
                 </Paper>
+
             </div>
         </div>
 

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import HeaderBar from '../components/HeaderBar';
 import { Link, useNavigate } from 'react-router-dom'
+
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,28 +9,29 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+
 import axios from 'axios';
 import DeleteButton from '../components/DeleteButton';
+import { LogoutButton } from '../components/buttons/LogoutButton';
 
 function createData(
     eventName: string,
-    eventType: string,
-    eventIntensity: number,
-    eventDate: string,
+    type: string,
+    location: string,
+    date: string,
 ) {
-    return { eventName, eventType, eventIntensity, eventDate };
+    return { eventName, type, location, date };
 }
 
 const rows = [
-    createData('Weekend Hike', 'Hike', 4, '10-22-2022'),
-    createData("Codie's 20th BDay", 'Backpack', 1, '10-23-2022'),
-    createData('Sinlge Mom Club', 'Hike', 2, '10-26-2022'),
-    createData('Rest and Relax', 'River Floating', 0, '10-27-2022'),
-    createData('Bird Watching group', "Camping", 1, '10-27-2022'),
-    createData('Rest and Relax', 'River Floating', 0, '11-03-2022'),
-    createData('Bird Watching group', "Camping", 2, '11-04-2022'),
-    createData('Rest and Relax', 'River Floating', 0, '11-17-2022'),
-    createData('Bird Watching group', "Camping", 1, '11-20-2022'),
+    createData('Weekend Hike', 'Hike', 'Mount Storm King', '10-22-2022'),
+    createData("Codie's 20th BDay", 'Backpack', 'Colchuck Lake', '10-23-2022'),
+    createData('Sinlge Mom Club', 'Hike', 'Cape Flattery', '10-26-2022'),
+    createData('Rest and Relax', 'River Floating', 'Snoqualmie River', '10-27-2022'),
+    createData('Bird Watching group', "Camping", 'Kalaloch Campground', '10-27-2022'),createData('Rest and Relax', 'River Floating', 'Snoqualmie River', '10-27-2022'),
+    createData('Bird Watching group', "Camping", 'Kalaloch Campground', '10-27-2022'),createData('Rest and Relax', 'River Floating', 'Snoqualmie River', '10-27-2022'),
+    createData('Bird Watching group', "Camping", 'Kalaloch Campground', '10-27-2022'),
+
 ];
 const tableStyle = {
     width: '90%',
@@ -74,7 +76,9 @@ const Dashboard = () => {
     <HeaderBar title='Upcoming Events' btnTitle='Logout' btnRoute='logout'/>
     <img alt='forrest' style={ imageStyle } src='https://imgs.search.brave.com/T-P-O4YLS_ZosnHvHNyjhmxz0JJTX3Eznw_i7qzqJOw/rs:fit:1200:1200:1/g:ce/aHR0cHM6Ly93YWxs/dXAubmV0L3dwLWNv/bnRlbnQvdXBsb2Fk/cy8yMDE2LzAyLzE4/LzI4NDY2Mi1wbGFu/dHMtbmF0dXJlLXJp/dmVyLWZvcmVzdC5q/cGc'></img>
     <Link  to='/events/new' style={ addStyle }> + New Event</Link>
+
     {loaded && <TableContainer style={ tableStyle } component={Paper}>
+
         <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
             <TableRow>
@@ -95,6 +99,7 @@ const Dashboard = () => {
                 <TableCell component="th" scope="row">
                 {row.eventName}
                 </TableCell>
+
                 <TableCell align="right">{row.eventType}</TableCell>
                 <TableCell align="right">{row.eventIntensity}</TableCell>
                 <TableCell align="right">{row.eventDate}</TableCell>
@@ -104,12 +109,14 @@ const Dashboard = () => {
                 <DeleteButton eventId=''/*  { thisEvent._id }  */ buttonName='Delete' successCallback=''/>
 
                 </TableCell>
+
             </TableRow>
             
             ))}
         </TableBody>
         </Table>
-    </TableContainer>}
+    </TableContainer>
+    <LogoutButton></LogoutButton>
     </div>);
 }
 export default Dashboard;

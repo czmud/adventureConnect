@@ -1,4 +1,5 @@
 import React from 'react'
+
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import EventForm from '../components/EventForm'
@@ -34,6 +35,7 @@ const CreateEvent = () => {
     return (<>
     <HeaderBar title='New events' btnTitle='Logout' btnRoute='logout'/>
     <EventForm title='Create an Event' btn='Create' submitCallback={ onCreate } creator={ organizer }/>
+
     </>)
 }
 

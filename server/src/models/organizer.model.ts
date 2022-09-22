@@ -21,12 +21,14 @@ export const OrganizerSchema = new Schema<IOrganizer>({
     firstName: {
         type: String,
         trim: true,
-        required: [true, 'First name is required']
+        required: [true, 'First name is required'],
+        minLength: [2, 'First name must be at least 2 characters']
     },
     lastName: {
         type: String,
         trim: true,
-        required: [true, 'Last name is required']
+        required: [true, 'Last name is required'],
+        minLength: [2, 'Last name must be at least 2 characters']
     },
     email: {
         type: String,
