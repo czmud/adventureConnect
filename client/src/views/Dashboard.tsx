@@ -1,7 +1,6 @@
 import * as React from 'react';
 import HeaderBar from '../components/HeaderBar';
 import { Link, useNavigate } from 'react-router-dom'
-
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -11,7 +10,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 import axios from 'axios';
-import DeleteButton from '../components/DeleteButton';
+import DeleteButton from '../components/buttons/DeleteButton';
 import { LogoutButton } from '../components/buttons/LogoutButton';
 
 function createData(
