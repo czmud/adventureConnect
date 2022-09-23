@@ -183,7 +183,7 @@ const EventForm = (props: EventFormProps) => {
     component="form"
     sx={{
     '& .MuiTextField-root': { m: 1, width: '25ch' },
-    }}
+    zIndex: '0'}}
     noValidate
     autoComplete="off"
 
@@ -274,7 +274,7 @@ const EventForm = (props: EventFormProps) => {
             </div>
             <div style={ formSide }>
 
-                <Box sx={{ m: 3 }}>
+                <Box zIndex={'3'} sx={{ m: 3 }}>
                     <Typography gutterBottom align="left">Intensity Rating</Typography>
                     <Slider
                     aria-label="Intensity Rating"
@@ -295,7 +295,7 @@ const EventForm = (props: EventFormProps) => {
                 </Box>
                 <br/><br/>
 
-                <Accordion sx={{ width: '80%'}}>
+                <Accordion sx={{ width: '80%', zIndex: '100'}}>
                     <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
@@ -336,7 +336,7 @@ const EventForm = (props: EventFormProps) => {
 
 
                 
-                <Paper sx={{ width: '70%', margin: '0px 15%', overflow: 'scroll', postions: 'absolute'}}>
+                <Paper sx={{ width: '70%', margin: '0px 15%', overflow: 'scroll', postions: 'absolute', zIndex: '25'}}>
                 <TableContainer sx={{ maxHeight: 160 }}>
                 <Table size='small' stickyHeader sx={{ minWidth: 400 }} aria-label="customized table">
                     <TableHead>
@@ -369,10 +369,10 @@ const EventForm = (props: EventFormProps) => {
     <Input style={ submitStyle } type='submit' value={ btn }/>
     
     </Box>
-    <div style={ splitForm }>
+    <div z-Index='1' style={ splitForm }>
         <div style={ formSide }></div>
         <div style={ formSide }>
-            <Accordion sx={{zIndex: '2', width: '24%', position: 'absolute', top: '520px', right: '435px'}}>
+            <Accordion sx={{width: '24%', position: 'absolute', top: '520px', right: '435px', zIndex: '50'}}>
                 <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1a-content"
