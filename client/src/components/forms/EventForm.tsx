@@ -345,11 +345,11 @@ const EventForm = (props: EventFormProps) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                    { thisEvent.users.length > 0 ? 
-                    thisEvent.users.map((user: User, idx: number) => (
+                    { eventUsers.length > 0 ? 
+                    eventUsers.map((user: User, idx: number) => (
                         <StyledTableRow key={idx}>
                             <StyledTableCell component="th" scope="row">
-                                {user.firstName}{user.lastName} ({user.email})
+                                {user.firstName} {user.lastName} ({user.email})
                             </StyledTableCell>
                         </StyledTableRow>
                     )): <StyledTableRow>
