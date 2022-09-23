@@ -13,7 +13,6 @@ import axios from 'axios';
 import DeleteButton from '../components/buttons/DeleteButton';
 import EventModelForView from '../models/EventModelForView';
 import Organizer from '../models/Organizer';
-import { Button } from '@mui/material';
 axios.defaults.withCredentials = true;
 
 
@@ -101,14 +100,13 @@ const Dashboard = () => {
             <TableCell align="right"><strong><h1>Date</h1></strong></TableCell>
             <TableCell align="right"><strong><h1>Actions</h1></strong></TableCell>
             </TableRow>
-            {<TableRow>
+            <TableRow>
                 <TableCell></TableCell>
                 <TableCell></TableCell>
                 <TableCell></TableCell>
                 <TableCell></TableCell>
                 <TableCell><button onClick={() => nav('/event/new')} style={ buttonStyle }> + New Event</button></TableCell>
-                
-            </TableRow>}
+            </TableRow>
         </TableHead>
         <TableBody>
             
@@ -135,7 +133,6 @@ const Dashboard = () => {
                 </>
                 : null }
                 </TableCell>
-
             </TableRow>
             
             ))}
