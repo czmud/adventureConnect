@@ -51,7 +51,7 @@ const EventDisplay = (props: EventDisplayProps) => {
     <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2}>
             <Grid xs={12} md={12} lg={12}>
-                <Item> Event Organizer is: { thisEvent.eventOrganizer.organizerFirstName } {thisEvent.eventOrganizer.organizerLastName}</Item>
+                <Item> Event Organizer is: { thisEvent.organizer.firstName } {thisEvent.organizer.lastName}</Item>
             </Grid>
         <Grid container xs={12} md={12} lg={12} spacing={4}>
             <Grid xs={6} md={6} lg={6}>
