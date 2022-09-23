@@ -31,8 +31,8 @@ const EventSchema = new mongoose.Schema({
     intensity: {
         type: Number,
         min: [
-            1,
-            'Event intensity must be at least 1 star'
+            0,
+            'Event intensity must be at least 0 stars'
         ],
         max: [
             5,
