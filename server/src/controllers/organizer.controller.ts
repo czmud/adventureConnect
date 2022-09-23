@@ -13,7 +13,6 @@ export const findAllOrganizers = (req: Request, res: Response) => {
 export const getLoggedInOrganizer = (req: Request, res: Response ) => {
     const decodedJWT: JwtPayload | null = jwt.decode(req.cookies.organizerToken, {complete: true});
     const _id = decodedJWT?.payload.id;
-    console.log("the di"+_id);
     Organizer.findOne({_id: _id })
         .then(oneOrganizer => res.json({ organizer: oneOrganizer }))
         .catch(err => res.json({ message: "Something went wrong", error: err }))
