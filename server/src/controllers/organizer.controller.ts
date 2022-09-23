@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import 'dotenv/config';
 import { Organizer } from "../models/organizer.model";
 import { Request, Response } from "express";
@@ -10,10 +10,13 @@ export const findAllOrganizers = (req: Request, res: Response) => {
         .catch(err => res.json({message: "Something went wrong", error: err }));
 }
 
-export const findOneOrganizer = (req: Request, res: Response) => {
-    Organizer.findOne({ _id: req.params.id})
+export const getLoggedInOrganizer = (req: Request, res: Response ) => {
+    const decodedJWT: JwtPayload | null = jwt.decode(req.cookies.organizerToken, {complete: true});
+    const _id = decodedJWT?.payload.id;
+    console.log("the di"+_id);
+    Organizer.findOne({_id: _id })
         .then(oneOrganizer => res.json({ organizer: oneOrganizer }))
-        .catch(err => res.json({message: "Something went wrong", error: err }));
+        .catch(err => res.json({ message: "Something went wrong", error: err }))
 }
 
 export const createNewOrganizer = (req: Request, res: Response) => {

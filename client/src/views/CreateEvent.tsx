@@ -16,6 +16,7 @@ interface FormErrors{
 const CreateEvent = () => {
     const nav = useNavigate();
     const [ errors, setErrors ] = React.useState<FormErrors[]>([]);
+    const [ currentOrganizer, setCurrentOrganizer ] = React.useState<Organizer>(new Organizer());
 
 //! ======== Needs Create Routes==============
     const onCreate = (thisEvent: EventModel) => {
@@ -36,20 +37,20 @@ const CreateEvent = () => {
 
 
 
-    //!===============Just For Data Example========
-    const organizer: Organizer = {
-        organizerId: "12345",
-        firstName: 'Jesse',
-        lastName: 'Made',
-        email: 'This@Yea.gmail.com'
-    }
-    //! ======== Adjust based on creator data after setting data routes up==========
-
-
+    React.useEffect(() => {
+        axios.get('http://localhost:8000/api/organizers/current')
+            .then(response => setCurrentOrganizer( new Organizer(
+                response.data.organizer._id,
+                response.data.organizer.firstName,
+                response.data.organizer.lastName,
+                response.data.organizer.email
+            )))
+            .catch(errors => console.log(errors));
+    },[]);
 
     return (<>
     <HeaderBar title='New events' btnTitle='Logout' btnRoute='logout'/>
-    <EventForm title='Create an Event' btn='Create' submitCallback={ onCreate } creator={ organizer } formErrors={errors}/>
+    <EventForm title='Create an Event' btn='Create' submitCallback={ onCreate } creator={ currentOrganizer } formErrors={errors}/>
 
     </>)
 }
