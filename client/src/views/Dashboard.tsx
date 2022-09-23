@@ -120,7 +120,6 @@ const Dashboard = () => {
         </TableBody>
         </Table>
     </TableContainer>}
-    <LogoutButton></LogoutButton>
     </div>);
 }
 export default Dashboard;
