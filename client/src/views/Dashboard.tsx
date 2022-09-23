@@ -31,12 +31,9 @@ const imageStyle ={
     left: '0',
     zIndex: '-1'
 }
-const addStyle={
-    background: 'white',
-    position: 'relative' as 'relative',
-    top: '38px',
-    right: '35%',
-    zIndex: '3'
+const buttonStyle={
+    width: '80%',
+    fontSize: '15px'
 }
 
 
@@ -66,6 +63,22 @@ const Dashboard = () => {
             .catch(errors => console.log(errors));
     },[]);
 
+    function dateChange(date: string){
+
+        date = date.slice(0,19);
+        
+        const MM: Array<string> = ["January", "February","March","April","May","June","July","August","September","October","November", "December"]
+        const year: string = date.slice(0, 4);
+        const  month: string = date.slice(5, 7);
+        const day: string = date.slice(8, 10);
+        const hour: string = String(parseInt(date.slice(11,13)));
+        const min: string = String(parseInt(date.slice(14, 17)));
+        const a_p: string = parseInt(hour) < 12 ? 'AM' : 'PM'
+        
+        return ''+MM[parseInt(month)-1]+' '+day+', '+year+' '+hour+':'+min+' '+a_p;
+        
+        }
+
     const removeFromDom = (_id: string) => {
         setAllEvents(allEvents.filter( oneEvent => oneEvent._id !== _id));
     }
@@ -73,7 +86,7 @@ const Dashboard = () => {
     return (<div >
     <HeaderBar title='Upcoming Events' btnTitle='Logout' btnRoute='logout'/>
     <img alt='forrest' style={ imageStyle } src='https://imgs.search.brave.com/T-P-O4YLS_ZosnHvHNyjhmxz0JJTX3Eznw_i7qzqJOw/rs:fit:1200:1200:1/g:ce/aHR0cHM6Ly93YWxs/dXAubmV0L3dwLWNv/bnRlbnQvdXBsb2Fk/cy8yMDE2LzAyLzE4/LzI4NDY2Mi1wbGFu/dHMtbmF0dXJlLXJp/dmVyLWZvcmVzdC5q/cGc'/>
-    <Link  to='/event/new' style={ addStyle }> + New Event</Link>
+    
 
     {loaded && <TableContainer style={ tableStyle } component={Paper}>
 
@@ -87,8 +100,16 @@ const Dashboard = () => {
             <TableCell align="right"><strong><h1>Date</h1></strong></TableCell>
             <TableCell align="right"><strong><h1>Actions</h1></strong></TableCell>
             </TableRow>
+            <TableRow>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                <TableCell><button onClick={() => nav('/event/new')} style={ buttonStyle }> + New Event</button></TableCell>              
+            </TableRow>
         </TableHead>
         <TableBody>
+            
             {allEvents.map((oneEvent) => (
             <TableRow
                 key={oneEvent._id}
@@ -102,7 +123,7 @@ const Dashboard = () => {
 
                 <TableCell align="right">{oneEvent.type}</TableCell>
                 <TableCell align="right">{oneEvent.intensity}</TableCell>
-                <TableCell align="right">{oneEvent.date.toString()}</TableCell>
+                <TableCell align="right">{dateChange(oneEvent.date.toString())}</TableCell>
                 <TableCell align="right">
                     { oneEvent.organizer.organizerId === currentOrganizer.organizerId ?
                 <>
@@ -112,7 +133,6 @@ const Dashboard = () => {
                 </>
                 : null }
                 </TableCell>
-
             </TableRow>
             
             ))}
