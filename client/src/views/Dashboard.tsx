@@ -12,26 +12,8 @@ import Paper from '@mui/material/Paper';
 import axios from 'axios';
 import DeleteButton from '../components/buttons/DeleteButton';
 import { LogoutButton } from '../components/buttons/LogoutButton';
+import EventModelForView from '../models/EventModelForView';
 
-function createData(
-    eventName: string,
-    eventType: string,
-    eventIntensity: string,
-    eventDate: string,
-) {
-    return { eventName, eventType, eventIntensity, eventDate };
-}
-
-const rows = [
-    createData('Weekend Hike', 'Hike', 'Mount Storm King', '10-22-2022'),
-    createData("Codie's 20th BDay", 'Backpack', 'Colchuck Lake', '10-23-2022'),
-    createData('Sinlge Mom Club', 'Hike', 'Cape Flattery', '10-26-2022'),
-    createData('Rest and Relax', 'River Floating', 'Snoqualmie River', '10-27-2022'),
-    createData('Bird Watching group', "Camping", 'Kalaloch Campground', '10-27-2022'),createData('Rest and Relax', 'River Floating', 'Snoqualmie River', '10-27-2022'),
-    createData('Bird Watching group', "Camping", 'Kalaloch Campground', '10-27-2022'),createData('Rest and Relax', 'River Floating', 'Snoqualmie River', '10-27-2022'),
-    createData('Bird Watching group', "Camping", 'Kalaloch Campground', '10-27-2022'),
-
-];
 const tableStyle = {
     width: '90%',
     margin: '10px 5%',
@@ -58,18 +40,21 @@ const addStyle={
 
 const Dashboard = () => {
     const nav = useNavigate();
-    const [allEvents, setAllEvents] = React.useState(Array<Event>);
-    const [loaded, setLoaded] = React.useState(true);
+    const [allEvents, setAllEvents] = React.useState<EventModelForView[]>([]);
+    const [loaded, setLoaded] = React.useState(false);
 
     React.useEffect(() => {
-        axios.get('')
-            .then(res => {
-                
+        axios.get('http://localhost:8000/api/events')
+            .then(response => {
+                setAllEvents(response.data.events);
+                setLoaded(true);
             })
-            .catch(err => {
+            .catch(errors => console.log(errors));
+    }, []);
 
-            })
-    })
+    const removeFromDom = (_id: string) => {
+        setAllEvents(allEvents.filter( oneEvent => oneEvent._id !== _id));
+    }
 
     return (<div >
     <HeaderBar title='Upcoming Events' btnTitle='Logout' btnRoute='logout'/>
@@ -90,22 +75,22 @@ const Dashboard = () => {
             </TableRow>
         </TableHead>
         <TableBody>
-            {rows.map((row) => (
+            {allEvents.map((oneEvent) => (
             <TableRow
-                key={row.eventName}
+                key={oneEvent._id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
                 <TableCell component="th" scope="row">
-                {row.eventName}
+                {oneEvent.name}
                 </TableCell>
 
-                <TableCell align="right">{row.eventType}</TableCell>
-                <TableCell align="right">{row.eventIntensity}</TableCell>
-                <TableCell align="right">{row.eventDate}</TableCell>
+                <TableCell align="right">{oneEvent.type}</TableCell>
+                <TableCell align="right">{oneEvent.intensity}</TableCell>
+                <TableCell align="right">{oneEvent.date.toString()}</TableCell>
                 <TableCell align="right">
-                <button onClick= {() => nav('/event/update/'/*  + thisEvent._id  */)}></button> 
+                <button onClick= {() => nav('/event/update/'+oneEvent._id)}>Edit</button> 
                 | 
-                <DeleteButton eventId=''/*  { thisEvent._id }  */ buttonName='Delete' successCallback=''/>
+                <DeleteButton _id={oneEvent._id} entityType="events" buttonName='Delete' successCallback={() => removeFromDom(oneEvent._id)}/>
 
                 </TableCell>
 
