@@ -1,5 +1,5 @@
 import React, { ReactNode, SetStateAction, SyntheticEvent, useState} from 'react'
-import { TextField, Box, Input, MenuItem, Slider, Typography, Tooltip, SliderValueLabelProps, FormHelperText, Accordion, AccordionDetails, AccordionSummary, TableContainer, Table, TableRow, TableHead,TableCell, tableCellClasses, TableBody, styled, Paper, OutlinedInput, FormControl, Select, InputLabel, SelectChangeEvent, Button } from '@mui/material';
+import { TextField, Box, Input, MenuItem, Slider, Typography, Tooltip, SliderValueLabelProps, FormHelperText, Accordion, AccordionDetails, AccordionSummary, TableContainer, Table, TableRow, TableHead,TableCell, tableCellClasses, TableBody, styled, Paper, OutlinedInput, FormControl, Select, InputLabel, SelectChangeEvent } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
@@ -8,7 +8,6 @@ import EventModel from '../../models/EventModel'
 import Organizer from '../../models/Organizer'
 import User from '../../models/User'
 import { useNavigate } from 'react-router-dom';
-import { FormatShapes } from '@mui/icons-material';
 
 //===========All Styling Content======
 const boxStyle = {

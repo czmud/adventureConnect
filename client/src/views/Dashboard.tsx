@@ -11,7 +11,6 @@ import Paper from '@mui/material/Paper';
 
 import axios from 'axios';
 import DeleteButton from '../components/buttons/DeleteButton';
-import { LogoutButton } from '../components/buttons/LogoutButton';
 import EventModelForView from '../models/EventModelForView';
 import Organizer from '../models/Organizer';
 axios.defaults.withCredentials = true;
