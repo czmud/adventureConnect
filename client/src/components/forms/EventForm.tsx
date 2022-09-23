@@ -157,7 +157,7 @@ const EventForm = (props: EventFormProps) => {
     const onUserEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUserEmail(e.target.value)
     }
-    const [eventUsers, setEventUsers] = useState(thisEvent.users || Array<User>);
+    const [eventUsers, setEventUsers] = useState(thisEvent.users);
     const onNewUser = (e: React.FormEvent) => {
         let newUser = new User(userFirstName, userLastName, userEmail);
         console.log(newUser);
