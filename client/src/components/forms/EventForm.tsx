@@ -157,9 +157,10 @@ const EventForm = (props: EventFormProps) => {
     const onUserEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUserEmail(e.target.value)
     }
-    const [eventUsers, setEventUsers] = useState(thisEvent.users);
+    const [eventUsers, setEventUsers] = useState(thisEvent.users || Array<User>);
     const onNewUser = (e: React.FormEvent) => {
         let newUser = new User(userFirstName, userLastName, userEmail);
+        console.log(newUser);
         setEventUsers([...eventUsers, newUser]);
         setUserFirstName('');
         setUserLastName('');
@@ -345,7 +346,7 @@ const EventForm = (props: EventFormProps) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                    { thisEvent.users ? 
+                    { thisEvent.users.length > 0 ? 
                     thisEvent.users.map((user: User, idx: number) => (
                         <StyledTableRow key={idx}>
                             <StyledTableCell component="th" scope="row">
