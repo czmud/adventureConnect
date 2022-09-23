@@ -19,8 +19,8 @@ function App() {
         <Route path="/register" element={<Register />}/>
         <Route path="/login" element={<Login />}/>
         <Route path="/event/new" element={<CreateEvent />}/>
-        <Route path="/event/update" element={<UpdateEvent />}/>
-        <Route path="/event/display" element={<EventPage />}/>
+        <Route path="/event/update/:id" element={<UpdateEvent />}/>
+        <Route path="/event/display/:id" element={<EventPage />}/>
       </Routes>
     </div>
   );
