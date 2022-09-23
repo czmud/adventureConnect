@@ -1,11 +1,12 @@
 class Organizer{
-    organizerFirstName: string;
-    organizerLastName: string;
-    organizerEmail: string;
-    constructor(organizerFirstName: string, organizerLastName: string, organizerEmail: string){
-    this.organizerFirstName= organizerFirstName;
-    this.organizerLastName= organizerLastName;
-    this.organizerEmail= organizerEmail;
+    organizerId?: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    constructor(firstName: string, lastName: string, email: string){
+    this.firstName= firstName;
+    this.lastName= lastName;
+    this.email= email;
     }
 }
 
