@@ -10,6 +10,9 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import User from '../models/User';
+import Organizer from '../models/Organizer';
+import axios from 'axios';
+axios.defaults.withCredentials = true;
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -50,7 +53,19 @@ interface EventDisplayProps{
 const EventDisplay = (props: EventDisplayProps) => {
     const nav = useNavigate();
     const thisEvent = props.event;
+    const [ currentOrganizer, setCurrentOrganizer ] = React.useState<Organizer>(new Organizer());
     
+    React.useEffect(() => {
+        axios.get('http://localhost:8000/api/organizers/current')
+            .then(response => setCurrentOrganizer( new Organizer(
+                response.data.organizer._id,
+                response.data.organizer.firstName,
+                response.data.organizer.lastName,
+                response.data.organizer.email
+            )))
+            .catch(errors => console.log(errors));
+    },[]);
+
     return (<>
     <Box sx={{ flexGrow: 1, margin: '0px 10%'}}>
         <Grid container spacing={2}>
@@ -149,9 +164,11 @@ const EventDisplay = (props: EventDisplayProps) => {
             <Grid xs={6} md={6} lg={6}>
                 <Item onClick={() => nav('/') }>Dashboard</Item>
             </Grid>
+            { thisEvent.organizer.organizerId === currentOrganizer.organizerId ?
             <Grid xs={6} md={6} lg={6}>
-                <Item onClick={() => nav('/event/update'+thisEvent._id) }>Edit</Item>
+                <Item onClick={() => nav('/event/update/'+thisEvent._id) }>Edit</Item>
             </Grid>
+            : null }
             </Grid>
         </Grid>
     </Box>
