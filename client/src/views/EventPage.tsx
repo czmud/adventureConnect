@@ -8,7 +8,7 @@ import EventModelForView from '../models/EventModelForView'
 
 const EventPage = () => {
     const { id } = useParams()
-    const [thisEvent, setThisEvent] = React.useState<EventModelForView>(new EventModelForView('','','','', new Date(), 1, new Organizer('fName', 'lName', 'email'), []))
+    const [thisEvent, setThisEvent] = React.useState<EventModelForView>(new EventModelForView('','','','', new Date(), 1, new Organizer('id','fName', 'lName', 'email'), []))
 
     React.useEffect(() => {
         axios.get('http://localhost:8000/api/events/'+id)

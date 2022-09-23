@@ -48,6 +48,7 @@ interface EventDisplayProps{
 }
 
 const EventDisplay = (props: EventDisplayProps) => {
+    const [openOrg, setOpenOrg] = React.useState(false);
     const nav = useNavigate();
     const thisEvent = props.event;
     
@@ -55,7 +56,11 @@ const EventDisplay = (props: EventDisplayProps) => {
     <Box sx={{ flexGrow: 1, margin: '0px 10%'}}>
         <Grid container spacing={2}>
             <Grid xs={12} md={12} lg={12}>
-                <Item> <h1>Event Organizer is: { thisEvent.organizer.firstName } {thisEvent.organizer.lastName}</h1></Item>
+                <Item> <h1 style={{display: 'inline-list-item'}}>Event Organizer is: { thisEvent.organizer.firstName } {thisEvent.organizer.lastName}</h1><span onClick={() => {
+                    openOrg === false ? setOpenOrg(true) : setOpenOrg(false)
+                }} style={{color: 'blue', textDecoration: 'underline', display: 'inline', marginLeft: '20px'}}>Want In?</span></Item>
+                <br/>
+                {openOrg && <Item>Please contact the organizer: <strong><em>{thisEvent.organizer.email}</em></strong></Item>}
             </Grid>
         <Grid container xs={12} md={12} lg={12} spacing={4}>
             <Grid xs={6} md={6} lg={6}>
