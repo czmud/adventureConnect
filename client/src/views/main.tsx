@@ -29,6 +29,21 @@ const imageStyle ={
     left: '0',
     zIndex: '-1'
 }
+function dateChange(date: string){
+
+    date = date.slice(0,19);
+    
+    const MM: Array<string> = ["January", "February","March","April","May","June","July","August","September","October","November", "December"]
+    const year: string = date.slice(0, 4);
+    const  month: string = date.slice(5, 7);
+    const day: string = date.slice(8, 10);
+    const hour: string = String(parseInt(date.slice(11,13)));
+    const min: string = String(parseInt(date.slice(14, 17)));
+    const a_p: string = parseInt(hour) < 12 ? 'AM' : 'PM'
+    
+    return ''+MM[parseInt(month)-1]+' '+day+', '+year+' '+hour+':'+min+' '+a_p;
+    
+    }
 const Main = () => {
     const [allEvents, setAllEvents] = React.useState<EventModelForView[]>([]);
     const [loaded, setLoaded] = React.useState(false);
@@ -71,7 +86,7 @@ const Main = () => {
                 </TableCell>
                 <TableCell align="right">{oneEvent.type}</TableCell>
                 <TableCell align="right">{oneEvent.intensity}</TableCell>
-                <TableCell align="right">{oneEvent.date.toString()}</TableCell>
+                <TableCell align="right">{dateChange(oneEvent.date.toString())}</TableCell>
             </TableRow>
             
             ))}
