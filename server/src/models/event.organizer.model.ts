@@ -14,5 +14,10 @@ export const EventOrganizerSchema = new mongoose.Schema({
         type: String,
         trim: true,
         required: [true, 'Organizer last name is required']
+    },
+    email: {
+        type: String,
+        trim: true,
+        required: [true, 'Organizer email is required']
     }
 });
