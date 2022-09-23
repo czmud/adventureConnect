@@ -2,6 +2,11 @@ import axios from 'axios';
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 
+const buttonStyle={
+    height: '30%',
+    width: '8%',
+}
+
 export const LogoutButton = () => {
     const navigate = useNavigate();
 
@@ -17,6 +22,6 @@ export const LogoutButton = () => {
     }
 
     return(
-        <button onClick={(event: React.MouseEvent<HTMLButtonElement>) => logOrganizerOut(event, redirectAfterSuccessfulLogout)} type="button">Logout</button>
+        <button style={buttonStyle} onClick={(event: React.MouseEvent<HTMLButtonElement>) => logOrganizerOut(event, redirectAfterSuccessfulLogout)} type="button">Logout</button>
     )
 }

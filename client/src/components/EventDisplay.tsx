@@ -12,14 +12,6 @@ import { useNavigate } from 'react-router-dom';
 import User from '../models/User';
 
 
-const boxStyle = {
-    background: 'rgba(200, 200, 200)',
-    width: '60%',
-    height: '900px',
-    margin: '80px 20% 0px',
-    borderRadius: '40px',
-    padding: '15px'
-}
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
@@ -154,9 +146,6 @@ const EventDisplay = (props: EventDisplayProps) => {
         <Grid xs={12} md={12} lg={12}
         container
         >
-            {/* <Grid xs={4} md={4} lg={4}>
-                <DeleteButton _id={thisEvent._id} entityType= 'events' buttonName='Delete' successCallback={() => removeFromDom(thisEvent._id)} />
-            </Grid> */}
             <Grid xs={6} md={6} lg={6}>
                 <Item onClick={() => nav('/') }>Dashboard</Item>
             </Grid>
