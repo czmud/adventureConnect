@@ -1,11 +1,9 @@
-import axios from 'axios'
-import React, { useEffect } from 'react'
-import EventModel from '../models/EventModel'
-import Organizer from '../models/Organizer'
+import React from 'react'
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
+import EventModelForView from '../models/EventModelForView';
 
 
 const boxStyle = {
@@ -27,12 +25,12 @@ const Item = styled(Paper)(({ theme }) => ({
 
 
 interface EventDisplayProps{
-    event?: EventModel; 
+    event: EventModelForView; 
 }
 
 
 const EventDisplay = (props: EventDisplayProps) => {
-    const thisEvent = props.event || new EventModel('','','', new Date(), 1, new Organizer('fName', 'lName', 'email'), []);
+    const thisEvent = props.event;
     
     return (<>
     {/* <div style={ boxStyle }>

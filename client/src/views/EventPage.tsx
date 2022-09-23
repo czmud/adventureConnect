@@ -1,27 +1,32 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import HeaderBar from '../components/HeaderBar'
 import EventDisplay from '../components/EventDisplay'
-import EventModel from '../models/EventModel'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
 import Organizer from '../models/Organizer'
+import EventModelForView from '../models/EventModelForView'
 
 const EventPage = () => {
-    const { eventId } = useParams()
-    // const [thisEvent, setThisEvent] = React.useState(EventModel)
+    const { id } = useParams()
+    const [thisEvent, setThisEvent] = React.useState<EventModelForView>(new EventModelForView('','','','', new Date(), 1, new Organizer('fName', 'lName', 'email'), []))
 
-    useEffect(() => {
-        axios.get(''+eventId)
-            .then(res => {
-                // setThisEvent(res.data)
-            })
-            .catch(err => {
-
-            })
-    })
+    React.useEffect(() => {
+        axios.get('http://localhost:8000/api/events/'+id)
+            .then(res => setThisEvent( new EventModelForView(
+                res.data.event._id,
+                res.data.event.name,
+                res.data.event.description,
+                res.data.event.type,
+                res.data.event.date,
+                res.data.event.intensity,
+                res.data.event.organizer,
+                res.data.event.users
+            )))
+            .catch(errors => console.log(errors))
+    },[id])
     return (<>
-        <HeaderBar title='{event.name}' btnTitle='Dashboard' btnRoute='dashboard'/>
-        <EventDisplay event={ new EventModel('name', 'desc', 'type', new Date(), 2, new Organizer('fName', 'lName', 'email'), []) }/>
+        <HeaderBar title={thisEvent.name} btnTitle='Dashboard' btnRoute='dashboard'/>
+        <EventDisplay event={ thisEvent }/>
     </>)
 }
 
