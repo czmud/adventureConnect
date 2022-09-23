@@ -7,7 +7,7 @@ import Register from './views/Register';
 import Login from './views/Login';
 import CreateEvent from './views/CreateEvent';
 import UpdateEvent from './views/UpdateEvent';
-import EventPage from './views/EventPage';
+import EventPage from './views/EventPage'
 
 
 function App() {

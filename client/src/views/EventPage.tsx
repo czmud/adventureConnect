@@ -25,7 +25,7 @@ const EventPage = () => {
             .catch(errors => console.log(errors))
     },[id])
     return (<>
-        <HeaderBar title={thisEvent.name} btnTitle='Dashboard' btnRoute='dashboard'/>
+        <HeaderBar title={thisEvent.name} btnTitle='Logout' btnRoute='logout'/>
         <EventDisplay event={ thisEvent }/>
     </>)
 }

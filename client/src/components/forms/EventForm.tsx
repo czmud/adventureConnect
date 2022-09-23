@@ -1,15 +1,28 @@
-import React, { ReactNode, SyntheticEvent, useState} from 'react'
-import { TextField, Box, Input, MenuItem, Slider, Typography, Tooltip, SliderValueLabelProps, FormHelperText, Accordion, AccordionDetails, AccordionSummary, TableContainer, Table, TableRow, TableHead,TableCell, tableCellClasses, TableBody, styled, Paper, OutlinedInput, FormControl, Select, InputLabel, SelectChangeEvent } from '@mui/material';
+import React, { ReactNode, SetStateAction, SyntheticEvent, useState} from 'react'
+import { TextField, Box, Input, MenuItem, Slider, Typography, Tooltip, SliderValueLabelProps, FormHelperText, Accordion, AccordionDetails, AccordionSummary, TableContainer, Table, TableRow, TableHead,TableCell, tableCellClasses, TableBody, styled, Paper, OutlinedInput, FormControl, Select, InputLabel, SelectChangeEvent, Button } from '@mui/material';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EventModel from '../../models/EventModel'
 import Organizer from '../../models/Organizer'
 import User from '../../models/User'
+import { useNavigate } from 'react-router-dom';
+import { FormatShapes } from '@mui/icons-material';
 
 //===========All Styling Content======
 const boxStyle = {
     background: 'rgba(200, 200, 200)',
     width: '60%',
     height: '900px',
+    margin: '80px 20% 0px',
+    borderRadius: '40px',
+    padding: '15px'
+}
+const boxStyle2 = {
+    background: 'rgba(200, 200, 200)',
+    width: '60%',
+    height: '400px',
     margin: '80px 20% 0px',
     borderRadius: '40px',
     padding: '15px'
@@ -96,6 +109,7 @@ interface EventFormProps{
 }
 
 const EventForm = (props: EventFormProps) => {
+    const nav = useNavigate();
     const { title, btn, event, creator, submitCallback } = props;
     
     const thisEvent =  event || new EventModel('','','', new Date(), 1, creator, []);
@@ -117,9 +131,10 @@ const EventForm = (props: EventFormProps) => {
 
     const [eventDate, setEventDate] = useState(thisEvent.date);
 
-    const onDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onDateChange = (value: React.ChangeEvent<HTMLInputElement>) => {
         console.log("halp");
-        setEventDate(new Date(e.target.value));
+        let value2: unknown = value as unknown
+        setEventDate(value2 as SetStateAction<Date>);
     }
 
     const [eventIntensity, setEventIntensity] = useState(thisEvent.intensity);
@@ -212,21 +227,17 @@ const EventForm = (props: EventFormProps) => {
                 />
                 <br/><br/><br/>
 
-                <TextField
-                required
-                fullWidth
-                value={ eventDate }
 
-                onChange={ (e: React.ChangeEvent<HTMLInputElement> ) => onDateChange(e) }
-
-                id="outlined-name"
-                type="datetime-local"
-                InputLabelProps={{
-                    shrink: true
-                }}
-                label="Event Time"
-                helperText="Required"
-                />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DateTimePicker
+                    renderInput={(props) => <TextField {...props} />}
+                    label="DateTimePicker"
+                    value={eventDate}
+                    onChange={ (value: React.ChangeEvent<HTMLInputElement> | null) => {if (value){
+                        onDateChange(value)
+                    }}
+                    }/>
+                </LocalizationProvider>
                 <br/><br/><br/>
 
 
@@ -284,7 +295,7 @@ const EventForm = (props: EventFormProps) => {
                 </Box>
                 <br/><br/>
 
-                <Accordion>
+                <Accordion sx={{ width: '80%'}}>
                     <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
@@ -321,7 +332,7 @@ const EventForm = (props: EventFormProps) => {
                         </Typography>
                     </AccordionDetails>
                 </Accordion>
-                <br/>
+                <br/><br/><br/><br/><br/><br/><br/>
 
 
                 
@@ -354,32 +365,33 @@ const EventForm = (props: EventFormProps) => {
             </div>
         </div>
 
-    <Input style={ submitStyle } type='submit' value="Cancel"/>
+    <Input onClick={()=> {nav('/dashboard')}} style={ submitStyle } type='submit' value="Cancel"/>
     <Input style={ submitStyle } type='submit' value={ btn }/>
     
     </Box>
-                    <Accordion sx={{zIndex: '2'}}>
-
-                    <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                    >
-                        <Typography>Add New Users</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <Typography>
-
+    <div style={ splitForm }>
+        <div style={ formSide }></div>
+        <div style={ formSide }>
+            <Accordion sx={{zIndex: '2', width: '24%', position: 'absolute', top: '520px', right: '435px'}}>
+                <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+                >
+                    <Typography>Add New Users</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <Typography>
                         <Box
-                            style={ boxStyle }
-                            component="form"
-                            sx={{
-                            '& .MuiTextField-root': { m: 1, width: '25ch' },
-                            }}
-                            noValidate
-                            autoComplete="off"
-                            onSubmit={(e: React.FormEvent) => {e.preventDefault(); onNewUser(e) }}>
-                            
+                        style={ boxStyle2 }
+                        component="form"
+                        sx={{
+                        '& .MuiTextField-root': { m: 1, width: '25ch' },
+                        }}
+                        noValidate
+                        autoComplete="off"
+                        onSubmit={(e: React.FormEvent) => {e.preventDefault(); onNewUser(e) }}>
+                        
                             <TextField
                             id="outlined-name"
                             label="First Name"
@@ -411,12 +423,12 @@ const EventForm = (props: EventFormProps) => {
                             <br/>
 
                             <Input style={ submitStyle } type='submit' value='Add New'/>
-
-                        </Box>
-                        </Typography>
-                    </AccordionDetails>
-                </Accordion>
-        <br/><br/><br/>
+                    </Box>
+                    </Typography>
+                </AccordionDetails>
+            </Accordion>
+        </div>
+    </div>
     </>
     )
 }

@@ -1,9 +1,15 @@
 import React from 'react'
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
+import {Paper, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow} from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import EventModelForView from '../models/EventModelForView';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { TextField } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import User from '../models/User';
 
 
 const boxStyle = {
@@ -22,34 +28,42 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
     }));
 
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+        [`&.${tableCellClasses.head}`]: {
+        backgroundColor: theme.palette.common.black,
+        color: theme.palette.common.white,
+        },
+        [`&.${tableCellClasses.body}`]: {
+        fontSize: 14,
+        },
+        }));
+    
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+            '&:nth-of-type(odd)': {
+            backgroundColor: theme.palette.action.hover,
+            },
+            // hide last border
+            '&:last-child td, &:last-child th': {
+            border: 0,
+            }
+        }));
+    
+
 
 
 interface EventDisplayProps{
-    event: EventModelForView; 
+    event: EventModelForView;
 }
 
-
 const EventDisplay = (props: EventDisplayProps) => {
+    const nav = useNavigate();
     const thisEvent = props.event;
     
     return (<>
-    {/* <div style={ boxStyle }>
-    //         organizer
-    //     <div style={ splitForm }>
-    //         <div>
-    //             intensity - type <br/>
-    //             Description <br/>
-    //         </div>
-    //         <div>
-    //             Date <br/>
-    //             users <br/>
-    //         </div>
-    //     </div>
-    // </div> */}
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, margin: '0px 10%'}}>
         <Grid container spacing={2}>
             <Grid xs={12} md={12} lg={12}>
-                <Item> Event Organizer is: { thisEvent.organizer.firstName } {thisEvent.organizer.lastName}</Item>
+                <Item> <h1>Event Organizer is: { thisEvent.organizer.firstName } {thisEvent.organizer.lastName}</h1></Item>
             </Grid>
         <Grid container xs={12} md={12} lg={12} spacing={4}>
             <Grid xs={6} md={6} lg={6}>
@@ -58,10 +72,11 @@ const EventDisplay = (props: EventDisplayProps) => {
                 id="category-a"
                 sx={{ fontSize: '12px', textTransform: 'uppercase' }}
                 >
-                    What are we doing?
+                    <h2>What are we doing?</h2>
                 </Box>
                 <Box component="ul" aria-labelledby="category-a" sx={{ pl: 2 }}>
-                    
+                    <p><em>{thisEvent.type}</em> ( Level: {thisEvent.intensity})</p>
+                    {thisEvent.intensity === 0? <p>Just taking in the nature at no set pace</p> : thisEvent.intensity === 1 ? <p>Looking to get active in the outdoors</p>: thisEvent.intensity === 2 ? <p>Trying to actively enjoy the outside. </p> : thisEvent.intensity === 3 ? <p>We will be moving with purpose. </p> : thisEvent.intensity === 4 ? <p>Let break a sweat in nature!</p> : <p>Lets get Adventuring! 21+ (Parental Guidance Required)</p>}
                 </Box>
                 </Item>
             </Grid>
@@ -71,12 +86,17 @@ const EventDisplay = (props: EventDisplayProps) => {
                 id="category-b"
                 sx={{ fontSize: '12px', textTransform: 'uppercase' }}
                 >
-                    Category B
+                    <h2>When are we Going?</h2>
                 </Box>
                 <Box component="ul" aria-labelledby="category-b" sx={{ pl: 2 }}>
-                    <li>Link 2.1</li>
-                    <li>Link 2.2</li>
-                    <li>Link 2.3</li>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DateTimePicker
+                    renderInput={(props) => <TextField {...props} />}
+                    label="Date-Time Chosen"
+                    value={thisEvent.date}
+                    onChange={() => ''}
+                    />
+                </LocalizationProvider>
                 </Box>
                 </Item>
             </Grid>
@@ -86,12 +106,10 @@ const EventDisplay = (props: EventDisplayProps) => {
                 id="category-c"
                 sx={{ fontSize: '12px', textTransform: 'uppercase' }}
                 >
-                    Category C
+                    <h2>What is happening?</h2>
                 </Box>
                 <Box component="ul" aria-labelledby="category-c" sx={{ pl: 2 }}>
-                    <li>Link 3.1</li>
-                    <li>Link 3.2</li>
-                    <li>Link 3.3</li>
+                    <p>Event Description: {thisEvent.description}</p>
                 </Box>
                 </Item>
             </Grid>
@@ -101,41 +119,51 @@ const EventDisplay = (props: EventDisplayProps) => {
                 id="category-d"
                 sx={{ fontSize: '12px', textTransform: 'uppercase' }}
                 >
-                    Category D
+                    <h2>Who is going?</h2>
                 </Box>
                 <Box component="ul" aria-labelledby="category-d" sx={{ pl: 2 }}>
-                    <li>Link 4.1</li>
-                    <li>Link 4.2</li>
-                    <li>Link 4.3</li>
+                <Paper sx={{ width: '70%', margin: '0px 15%', overflow: 'scroll', postions: 'absolute'}}>
+                <TableContainer sx={{ maxHeight: 160 }}>
+                <Table size='small' stickyHeader sx={{ minWidth: 400 }} aria-label="customized table">
+                    <TableHead>
+                        <TableRow>
+                            <StyledTableCell>Users Going: </StyledTableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    { thisEvent.users.length > 0 ? 
+                    thisEvent.users.map((user: User, idx: number) => (
+                        <StyledTableRow key={idx}>
+                            <StyledTableCell component="th" scope="row">
+                                {user.firstName}{user.lastName} ({user.email})
+                            </StyledTableCell>
+                        </StyledTableRow>
+                    )): <StyledTableRow>
+                            <StyledTableCell component="th" scope="row">
+                                No users yet
+                            </StyledTableCell>
+                        </StyledTableRow>}
+                    </TableBody>
+                </Table>
+                </TableContainer>
+                </Paper>
                 </Box>
                 </Item>
             </Grid>
             </Grid>
-        <Grid
-        xs={12}
-        md={12} 
-        lg={12}
+        <Grid xs={12} md={12} lg={12}
         container
-        justifyContent="space-between"
-        alignItems="center"
-        flexDirection={{ xs: 'column', sm: 'row' }}
-        sx={{ fontSize: '12px' }}
         >
-            <Grid sx={{ order: { xs: 2, sm: 1 } }}>
-                <Item>© Copyright</Item>
+            {/* <Grid xs={4} md={4} lg={4}>
+                <DeleteButton _id={thisEvent._id} entityType= 'events' buttonName='Delete' successCallback={() => removeFromDom(thisEvent._id)} />
+            </Grid> */}
+            <Grid xs={6} md={6} lg={6}>
+                <Item onClick={() => nav('/') }>Dashboard</Item>
             </Grid>
-            <Grid container columnSpacing={1} sx={{ order: { xs: 1, sm: 2 } }}>
-            <Grid>
-                <Item>Link A</Item>
-            </Grid>
-            <Grid>
-                <Item>Link B</Item>
-            </Grid>
-            <Grid>
-                <Item>Link C</Item>
+            <Grid xs={6} md={6} lg={6}>
+                <Item onClick={() => nav('/event/update'+thisEvent._id) }>Edit</Item>
             </Grid>
             </Grid>
-        </Grid>
         </Grid>
     </Box>
     </>)
