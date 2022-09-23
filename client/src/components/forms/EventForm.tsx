@@ -115,8 +115,7 @@ const EventForm = (props: EventFormProps) => {
     const onTypeChange = (e: SelectChangeEvent<string>) => {
         setEventType(e.target.value)
     }
-
-    const [eventDate, setEventDate] = useState(thisEvent.eventDate);
+    const [eventDate, setEventDate] = useState(thisEvent.eventDate)
     const onDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEventDate(new Date(e.target.value))
     }
@@ -210,10 +209,8 @@ const EventForm = (props: EventFormProps) => {
                 <TextField
                 required
                 fullWidth
-
                 value={ eventDate }
-                onChange={ onDateChange }
-
+                onChange={() => onDateChange }
                 id="outlined-name"
                 type="datetime-local"
                 InputLabelProps={{

@@ -1,5 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
+import { LogoutButton } from './buttons/LogoutButton';
 
 const HeaderBar = ( props: any ) => {
 
@@ -29,8 +30,10 @@ const HeaderBar = ( props: any ) => {
     return (<div style={ headStyle }>
         <h1 style={titleStyle}>AdvCon</h1>
         <h1>{ title }</h1>
+        { btnTitle === 'Logout' ?
+        <LogoutButton/> :
         <button style= { buttonStyle } onClick={()=> nav('/'+btnRoute)}>{btnTitle}</button>
-
+        }
     </div>)
 }
 
