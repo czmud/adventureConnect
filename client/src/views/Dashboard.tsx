@@ -13,6 +13,9 @@ import axios from 'axios';
 import DeleteButton from '../components/buttons/DeleteButton';
 import { LogoutButton } from '../components/buttons/LogoutButton';
 import EventModelForView from '../models/EventModelForView';
+import Organizer from '../models/Organizer';
+axios.defaults.withCredentials = true;
+
 
 const tableStyle = {
     width: '90%',
@@ -42,6 +45,7 @@ const Dashboard = () => {
     const nav = useNavigate();
     const [allEvents, setAllEvents] = React.useState<EventModelForView[]>([]);
     const [loaded, setLoaded] = React.useState(false);
+    const [ currentOrganizer, setCurrentOrganizer ] = React.useState<Organizer>(new Organizer());
 
     React.useEffect(() => {
         axios.get('http://localhost:8000/api/events')
@@ -50,7 +54,18 @@ const Dashboard = () => {
                 setLoaded(true);
             })
             .catch(errors => console.log(errors));
-    }, []);
+    },[]);
+
+    React.useEffect(() => {
+        axios.get('http://localhost:8000/api/organizers/current')
+            .then(response => setCurrentOrganizer( new Organizer(
+                response.data.organizer._id,
+                response.data.organizer.firstName,
+                response.data.organizer.lastName,
+                response.data.organizer.email
+            )))
+            .catch(errors => console.log(errors));
+    },[]);
 
     const removeFromDom = (_id: string) => {
         setAllEvents(allEvents.filter( oneEvent => oneEvent._id !== _id));
@@ -90,10 +105,13 @@ const Dashboard = () => {
                 <TableCell align="right">{oneEvent.intensity}</TableCell>
                 <TableCell align="right">{oneEvent.date.toString()}</TableCell>
                 <TableCell align="right">
+                    { oneEvent.organizer.organizerId === currentOrganizer.organizerId ?
+                <>
                 <button onClick= {() => nav('/event/update/'+oneEvent._id)}>Edit</button> 
                 | 
                 <DeleteButton _id={oneEvent._id} entityType="events" buttonName='Delete' successCallback={() => removeFromDom(oneEvent._id)}/>
-
+                </>
+                : null }
                 </TableCell>
 
             </TableRow>

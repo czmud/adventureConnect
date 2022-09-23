@@ -4,7 +4,7 @@ import { authenticate } from "../config/jwt.config";
 
 export const AllOrganizerRoutes = (app: express.Application) => {
     app.get("/api/organizers/", authenticate, OrganizersController.findAllOrganizers);
-    app.get("/api/organizers/:id", OrganizersController.findOneOrganizer);
+    app.get("/api/organizers/current", OrganizersController.getLoggedInOrganizer);
     app.post("/api/organizers/register", OrganizersController.createNewOrganizer);
     app.post("/api/organizers/login", OrganizersController.logOrganizerIn);
     app.post("/api/organizers/logout", OrganizersController.logOrganizerOut);
