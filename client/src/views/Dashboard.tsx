@@ -81,7 +81,9 @@ const Dashboard = () => {
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
                 <TableCell component="th" scope="row">
-                {oneEvent.name}
+                    <Link to={"/event/display/"+oneEvent._id}>
+                        {oneEvent.name}
+                    </Link>
                 </TableCell>
 
                 <TableCell align="right">{oneEvent.type}</TableCell>

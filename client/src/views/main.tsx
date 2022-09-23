@@ -12,6 +12,7 @@ import Paper from '@mui/material/Paper';
 
 import axios from 'axios';
 import EventModelForView from '../models/EventModelForView';
+import { Link } from 'react-router-dom';
 
 const tableStyle = {
     width: '90%',
@@ -64,7 +65,9 @@ const Main = () => {
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
                 <TableCell component="th" scope="row">
-                {oneEvent.name}
+                    <Link to={"/event/display/"+oneEvent._id}>
+                        {oneEvent.name}
+                    </Link>
                 </TableCell>
                 <TableCell align="right">{oneEvent.type}</TableCell>
                 <TableCell align="right">{oneEvent.intensity}</TableCell>
