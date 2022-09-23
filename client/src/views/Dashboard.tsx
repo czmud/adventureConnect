@@ -105,7 +105,7 @@ const Dashboard = () => {
                 <TableCell></TableCell>
                 <TableCell></TableCell>
                 <TableCell></TableCell>
-                <TableCell><button onClick={() => nav('/event/new')} style={ buttonStyle }> + New Event</button></TableCell>
+                <TableCell><button onClick={() => nav('/event/new')} style={ buttonStyle }> + New Event</button></TableCell>              
             </TableRow>
         </TableHead>
         <TableBody>
