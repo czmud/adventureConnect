@@ -5,7 +5,10 @@ import EventForm from '../components/forms/EventForm'
 import HeaderBar from '../components/HeaderBar'
 const EventModel =  require('../models/EventModel')
 
-
+interface FormErrors{
+    path: string;
+    message: string;
+}
 
 
 const UpdateEvent = () => {
@@ -13,6 +16,7 @@ const UpdateEvent = () => {
     const [thisEvent, setThisEvent] = useState(EventModel);
     const [loaded, setLoaded] = useState(true);
     const [errors, setErrors] = React.useState(Array<any>);
+    const [formErrors, setFormErrors] = React.useState<FormErrors[]>([]);
     const nav = useNavigate();
 
 
@@ -46,7 +50,7 @@ const UpdateEvent = () => {
                 for (const key of Object.keys(errorResponse)) {
                     errorArr.push(errorResponse[key].message)
                 }
-            setErrors(errorArr);
+            setFormErrors(errorArr);
             })
     }
 
@@ -55,7 +59,7 @@ const UpdateEvent = () => {
 
         {errors.map((err, index) => <p key={index}>{err}</p>)}
 
-        { loaded && <EventForm title={thisEvent.eventType} btn='Update' submitCallback={ onUpdate } event={thisEvent} creator={thisEvent.organizer}/>}
+        { loaded && <EventForm title={thisEvent.eventType} btn='Update' submitCallback={ onUpdate } event={thisEvent} creator={thisEvent.organizer} formErrors={formErrors}/>}
     </>)
 }
 

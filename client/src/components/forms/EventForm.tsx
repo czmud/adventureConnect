@@ -82,45 +82,47 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 // ======= Actual Form component Starts Here =============
 const types = ['Hiking', 'Back Packing', 'Climbing', 'Camping', 'Rafting', 'Boating', 'Extreme', 'Sports']
 
+interface FormErrors{
+    path: string;
+    message: string;
+}
 interface EventFormProps{
     title: string;
     btn: string;
     event?: EventModel; // can use a '?' to mark option types in an interface (same as in classes/types etc.)
     creator: Organizer;
+    formErrors: FormErrors[];
     submitCallback: Function;
 }
 
 const EventForm = (props: EventFormProps) => {
     const { title, btn, event, creator, submitCallback } = props;
     
-    const organizer: Organizer = {
-        organizerFirstName: creator.organizerFirstName,
-        organizerLastName: creator.organizerLastName,
-        organizerEmail: creator.organizerEmail
-    }
-    const thisEvent =  event || new EventModel('','','', new Date(), 1, organizer, []);
+    const thisEvent =  event || new EventModel('','','', new Date(), 1, creator, []);
 
-    const [eventName, setEventName] = useState(thisEvent.eventName);
+    const [eventName, setEventName] = useState(thisEvent.name);
     const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEventName(e.target.value);
-        console.log(eventName);
     }
 
-    const [eventDescription, setEventDescription] = useState(thisEvent.eventDescription);
+    const [eventDescription, setEventDescription] = useState(thisEvent.description);
     const onDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEventDescription(e.target.value)
     }
     
-    const [eventType, setEventType] = useState(thisEvent.eventType);
+    const [eventType, setEventType] = useState(thisEvent.type);
     const onTypeChange = (e: SelectChangeEvent<string>) => {
         setEventType(e.target.value)
     }
-    const [eventDate, setEventDate] = useState(thisEvent.eventDate)
+
+    const [eventDate, setEventDate] = useState(thisEvent.date);
+
     const onDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEventDate(new Date(e.target.value))
+        console.log("halp");
+        setEventDate(new Date(e.target.value));
     }
 
-    const [eventIntensity, setEventIntensity] = useState(thisEvent.eventIntensity);
+    const [eventIntensity, setEventIntensity] = useState(thisEvent.intensity);
     const onIntensityChange = (e: React.SyntheticEvent | Event, value: number | Array<number>) => {
         if (typeof value !== 'number'){
             value = value[0];
@@ -140,23 +142,27 @@ const EventForm = (props: EventFormProps) => {
     const onUserEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUserEmail(e.target.value)
     }
-    const [eventUsers, setEventUsers] = useState(thisEvent.eventUsers);
+    const [eventUsers, setEventUsers] = useState(thisEvent.users);
     const onNewUser = (e: React.FormEvent) => {
-        let newUser = new User(userFirstName, userLastName, userEmail)
-        setEventUsers([...eventUsers, newUser])
+        let newUser = new User(userFirstName, userLastName, userEmail);
+        setEventUsers([...eventUsers, newUser]);
+        setUserFirstName('');
+        setUserLastName('');
+        setUserEmail('');
     }
     
     const submitHandler = () => {
-        thisEvent.eventName = eventName;
-        thisEvent.eventDescription = eventDescription;
-        thisEvent.eventType = eventType;
-        thisEvent.eventDate = eventDate;
-        thisEvent.eventIntensity = eventIntensity;
-        thisEvent.eventUsers = eventUsers;
+        thisEvent.name = eventName;
+        thisEvent.description = eventDescription;
+        thisEvent.type = eventType;
+        thisEvent.date = eventDate;
+        thisEvent.intensity = eventIntensity;
+        thisEvent.users = eventUsers;
         submitCallback(thisEvent);
     }
 
     return (
+    <>
     <Box
     style={ boxStyle }
     component="form"
@@ -166,7 +172,7 @@ const EventForm = (props: EventFormProps) => {
     noValidate
     autoComplete="off"
 
-    onSubmit={(e) => {e.preventDefault(); submitHandler() }}>
+    onSubmit={(e: React.FormEvent) => {e.preventDefault(); submitHandler() }}>
 
         <h1>{ title }</h1>
         <div style={ splitForm }>
@@ -210,7 +216,9 @@ const EventForm = (props: EventFormProps) => {
                 required
                 fullWidth
                 value={ eventDate }
-                onChange={() => onDateChange }
+
+                onChange={ (e: React.ChangeEvent<HTMLInputElement> ) => onDateChange(e) }
+
                 id="outlined-name"
                 type="datetime-local"
                 InputLabelProps={{
@@ -291,7 +299,7 @@ const EventForm = (props: EventFormProps) => {
                             id="outlined-name"
                             label="Organize Name"
 
-                            value={""+thisEvent.eventOrganizer.organizerFirstName+ ' '+ thisEvent.eventOrganizer.organizerLastName}
+                            value={""+thisEvent.organizer.firstName+ ' '+ thisEvent.organizer.lastName}
 
                             InputProps={{
                                 readOnly: true,
@@ -301,10 +309,10 @@ const EventForm = (props: EventFormProps) => {
                             <TextField
                             required
                             id="outlined-name"
-                            label="Oraganizer Email"
+                            label="Organizer Email"
                             type='email'
 
-                            value={thisEvent.eventOrganizer.organizerEmail}
+                            value={thisEvent.organizer.email}
 
                             InputProps={{
                                 readOnly: true,
@@ -315,7 +323,42 @@ const EventForm = (props: EventFormProps) => {
                 </Accordion>
                 <br/>
 
-                <Accordion sx={{zIndex: '2'}}>
+
+                
+                <Paper sx={{ width: '70%', margin: '0px 15%', overflow: 'scroll', postions: 'absolute'}}>
+                <TableContainer sx={{ maxHeight: 160 }}>
+                <Table size='small' stickyHeader sx={{ minWidth: 400 }} aria-label="customized table">
+                    <TableHead>
+                        <TableRow>
+                            <StyledTableCell>Users Going: </StyledTableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    { thisEvent.users ? 
+                    thisEvent.users.map((user: User, idx: number) => (
+                        <StyledTableRow key={idx}>
+                            <StyledTableCell component="th" scope="row">
+                                {user.firstName}{user.lastName} ({user.email})
+                            </StyledTableCell>
+                        </StyledTableRow>
+                    )): <StyledTableRow>
+                            <StyledTableCell component="th" scope="row">
+                                No users yet
+                            </StyledTableCell>
+                        </StyledTableRow>}
+                    </TableBody>
+                </Table>
+                </TableContainer>
+                </Paper>
+
+            </div>
+        </div>
+
+    <Input style={ submitStyle } type='submit' value="Cancel"/>
+    <Input style={ submitStyle } type='submit' value={ btn }/>
+    
+    </Box>
+                    <Accordion sx={{zIndex: '2'}}>
 
                     <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
@@ -336,7 +379,7 @@ const EventForm = (props: EventFormProps) => {
                             noValidate
                             autoComplete="off"
                             onSubmit={(e: React.FormEvent) => {e.preventDefault(); onNewUser(e) }}>
-                        
+                            
                             <TextField
                             id="outlined-name"
                             label="First Name"
@@ -373,41 +416,8 @@ const EventForm = (props: EventFormProps) => {
                         </Typography>
                     </AccordionDetails>
                 </Accordion>
-                <br/><br/><br/>
-                
-                <Paper sx={{ width: '70%', margin: '0px 15%', overflow: 'scroll', postions: 'absolute'}}>
-                <TableContainer sx={{ maxHeight: 160 }}>
-                <Table size='small' stickyHeader sx={{ minWidth: 400 }} aria-label="customized table">
-                    <TableHead>
-                        <TableRow>
-                            <StyledTableCell>Users Going: </StyledTableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                    { thisEvent.eventUsers ? 
-                    thisEvent.eventUsers.map((user: User, idx: number) => (
-                        <StyledTableRow key={idx}>
-                            <StyledTableCell component="th" scope="row">
-                                {user.userFirstName}{user.userLastName} ({user.userEmail})
-                            </StyledTableCell>
-                        </StyledTableRow>
-                    )): <StyledTableRow>
-                            <StyledTableCell component="th" scope="row">
-                                No users yet
-                            </StyledTableCell>
-                        </StyledTableRow>}
-                    </TableBody>
-                </Table>
-                </TableContainer>
-                </Paper>
-
-            </div>
-        </div>
-
-    <Input style={ submitStyle } type='submit' value="Cancel"/>
-    <Input style={ submitStyle } type='submit' value={ btn }/>
-    
-    </Box>
+        <br/><br/><br/>
+    </>
     )
 }
 
