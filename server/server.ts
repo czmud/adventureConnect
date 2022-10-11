@@ -5,11 +5,12 @@ import cookieParser from 'cookie-parser';
 import cors from "cors";
 const app = express();
 app.use(cookieParser());
-app.use(cors({credentials: true, origin: process.env.CLIENT_URL, preflightContinue: true, methods: "GET,HEAD,PUT,PATCH,POST,DELETE"}));
 const port: number = 8000;
 import "./src/config/mongoose.config"
 
 app.use(express.json(), express.urlencoded({ extended: true }));
+
+app.use(cors({credentials: true, origin: process.env.CLIENT_URL, preflightContinue: true, methods: "GET,HEAD,PUT,PATCH,POST,DELETE"}));
 
 import { AllEventRoutes } from './src/routes/event.routes'
 AllEventRoutes(app);
