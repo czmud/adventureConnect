@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser';
 import cors from "cors";
 const app = express();
 app.use(cookieParser());
-app.use(cors({credentials: true, origin: process.env.CLIENT_URL}));
+app.use(cors({credentials: true, origin: process.env.CLIENT_URL, preflightContinue: true, methods: "GET,HEAD,PUT,PATCH,POST,DELETE"}));
 const port: number = 8000;
 import "./src/config/mongoose.config"
 
