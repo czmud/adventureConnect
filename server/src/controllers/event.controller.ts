@@ -2,9 +2,10 @@ import { Event } from "../models/event.model";
 import { Request, Response } from "express";
 
 export const findAllEvents = (req: Request, res: Response) => {
-    Event.find()
-        .then(allEvents => res.json({ events: allEvents }))
-        .catch(err => res.json({message: "Something went wrong", error: err }));
+    res.json({events: 'are they real?'})
+    // Event.find()
+    //     .then(allEvents => res.json({ events: allEvents }))
+    //     .catch(err => res.json({message: "Something went wrong", error: err }));
 }
 
 export const findOneEvent = (req: Request, res: Response) => {
