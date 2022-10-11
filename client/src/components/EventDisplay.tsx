@@ -60,7 +60,7 @@ const EventDisplay = (props: EventDisplayProps) => {
     const [ currentOrganizer, setCurrentOrganizer ] = React.useState<Organizer>(new Organizer());
     
     React.useEffect(() => {
-        axios.get('http://localhost:8000/api/organizers/current')
+        axios.get(process.env.REACT_APP_SERVER_URL+'/api/organizers/current')
             .then(response => setCurrentOrganizer( new Organizer(
                 response.data.organizer._id,
                 response.data.organizer.firstName,

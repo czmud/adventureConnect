@@ -72,7 +72,7 @@ const LoginForm = () => {
 
     const submitLoginForm = (event: React.FormEvent, oneOrganizer: LoginOrganizer, successCallback: Function) => {
         event.preventDefault();
-        axios.post( 'http://localhost:8000/api/organizers/login', oneOrganizer )
+        axios.post(process.env.REACT_APP_SERVER_URL+'/api/organizers/login', oneOrganizer )
             .then( () => successCallback())
             .catch( errors => {
                 const errorResponse = errors.response.data.errors;

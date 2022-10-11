@@ -20,7 +20,7 @@ const UpdateEvent = () => {
     const nav = useNavigate();
 
     React.useEffect(() => {
-        axios.get('http://localhost:8000/api/events/'+id)
+        axios.get(process.env.REACT_APP_SERVER_URL+'/api/events/'+id)
             .then(res => {setThisEvent( new EventModelForView(
                 res.data.event._id,
                 res.data.event.name,

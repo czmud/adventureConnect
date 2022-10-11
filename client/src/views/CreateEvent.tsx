@@ -20,7 +20,7 @@ const CreateEvent = () => {
 
 //! ======== Needs Create Routes==============
     const onCreate = (thisEvent: EventModel) => {
-        axios.post('http://localhost:8000/api/events/new', thisEvent)
+        axios.post(process.env.REACT_APP_SERVER_URL+'/api/events/new', thisEvent)
             .then( () => nav('/dashboard'))
             .catch( errors => {
                 const errorResponse = errors.response.data.errors;
@@ -38,7 +38,7 @@ const CreateEvent = () => {
 
 
     React.useEffect(() => {
-        axios.get('http://localhost:8000/api/organizers/current')
+        axios.get(process.env.REACT_APP_SERVER_URL+'/api/organizers/current')
             .then(response => setCurrentOrganizer( new Organizer(
                 response.data.organizer._id,
                 response.data.organizer.firstName,
