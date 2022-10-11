@@ -13,7 +13,7 @@ const DeleteButton = (props: DeleteButtonProps) => {
 
 //! ======== Needs Delete Routes==============
     const deleteEvent = () => {
-        axios.delete('http://localhost:8000/api/'+entityType+'/delete/'+_id)
+        axios.delete(process.env.REACT_APP_SERVER_URL+'/api/'+entityType+'/delete/'+_id)
             .then( () => successCallback() )
             .catch(errors => console.log(errors));
     };

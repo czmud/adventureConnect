@@ -44,7 +44,7 @@ const Dashboard = () => {
     const [ currentOrganizer, setCurrentOrganizer ] = React.useState<Organizer>(new Organizer());
 
     React.useEffect(() => {
-        axios.get('http://localhost:8000/api/events')
+        axios.get(process.env.REACT_APP_SERVER_URL+'/api/events')
             .then(response => {
                 setAllEvents(response.data.events);
                 setLoaded(true);
@@ -53,7 +53,7 @@ const Dashboard = () => {
     },[]);
 
     React.useEffect(() => {
-        axios.get('http://localhost:8000/api/organizers/current')
+        axios.get(process.env.REACT_APP_SERVER_URL+'/api/organizers/current')
             .then(response => setCurrentOrganizer( new Organizer(
                 response.data.organizer._id,
                 response.data.organizer.firstName,

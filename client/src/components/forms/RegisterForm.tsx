@@ -76,7 +76,7 @@ const RegisterForm = () => {
 
     const submitRegistrationForm = (event: React.FormEvent, oneOrganizer: RegisterOrganizer, successCallback: Function ) => {
         event.preventDefault();
-        axios.post( 'http://localhost:8000/api/organizers/register', oneOrganizer )
+        axios.post(process.env.REACT_APP_SERVER_URL+'/api/organizers/register', oneOrganizer )
             .then( () => successCallback() )
             .catch( errors => {
                 const errorResponse = errors.response.data.errors;

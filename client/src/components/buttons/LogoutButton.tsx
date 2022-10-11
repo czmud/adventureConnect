@@ -16,7 +16,7 @@ export const LogoutButton = () => {
 
     const logOrganizerOut = (event: React.MouseEvent<HTMLButtonElement>, successCallback: Function) => {
         event.preventDefault();
-        axios.post("http://localhost:8000/api/organizers/logout")
+        axios.post(process.env.REACT_APP_SERVER_URL+'/api/organizers/logout')
             .then(() => successCallback())
             .catch(errors => console.log(errors));
     }

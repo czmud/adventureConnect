@@ -49,7 +49,7 @@ const Main = () => {
     const [loaded, setLoaded] = React.useState(false);
 
     React.useEffect(() => {
-        axios.get('http://localhost:8000/api/events')
+        axios.get(process.env.REACT_APP_SERVER_URL+'/api/events')
             .then(response => {
                 setAllEvents(response.data.events);
                 setLoaded(true);
