@@ -19,17 +19,18 @@ const HeaderBar = ( props: any ) => {
     }
     const titleStyle={
         color: 'purple',
-        fontSize: '50px'
+        fontSize: '6vw'
     }
     const buttonStyle={
-        height: '30%',
+        height: 'auto',
         width: '8%',
+        fontSize: '1.35vw'
     }
 
 
     return (<div style={ headStyle }>
         <h1 style={titleStyle}>AdvCon</h1>
-        <h1>{ title }</h1>
+        <h1 style={{fontSize: '4vw'}}>{ title }</h1>
         { btnTitle === 'Logout' ?
         <LogoutButton/> :
         <button style= { buttonStyle } onClick={()=> nav('/'+btnRoute)}>{btnTitle}</button>
