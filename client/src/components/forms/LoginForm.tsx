@@ -42,7 +42,7 @@ const LoginForm = () => {
     const navigate = useNavigate();
     const [oneOrganizer, dispatch] = React.useReducer( reducer, new LoginOrganizer());
     const [showPassword, setShowPassword] = React.useState<boolean>(false);
-    const [ errors, setErrors ] = React.useState<FormErrors[]>([]);
+    const [ errors, setErrors ] = React.useState<{ [path: string]: FormErrors }>({});
 
     const handleChange = ( event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
@@ -76,14 +76,15 @@ const LoginForm = () => {
             .then( () => successCallback())
             .catch( errors => {
                 const errorResponse = errors.response.data.errors;
-                const errorList: FormErrors[] = [];
+                console.log(errorResponse)
+                const errorDict: { [path: string]: FormErrors } = {};
                 for( const key of Object.keys(errorResponse)){
-                    errorList.push({
+                    errorDict[errorResponse[key].path] = {
                         path: errorResponse[key].path,
                         message: errorResponse[key].message
-                    });
+                    };
                 }
-                setErrors(errorList);
+                setErrors(errorDict);
             });
     };
 
