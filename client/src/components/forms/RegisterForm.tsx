@@ -45,7 +45,7 @@ const RegisterForm = () => {
         showPassword: false,
         showConfirmPassword: false
     });
-    const [ errors, setErrors ] = React.useState<FormErrors[]>([]);
+    const [ errors, setErrors ] = React.useState<{ [path: string]: FormErrors }>({});
 
     const handleChange = ( event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
@@ -80,15 +80,15 @@ const RegisterForm = () => {
             .then( () => successCallback() )
             .catch( errors => {
                 const errorResponse = errors.response.data.errors;
-                const errorList: FormErrors[] = [];
+                const errorDict: { [path: string]: FormErrors } = {};
                 for( const key of Object.keys(errorResponse)){
-                    errorList.push({
+                    errorDict[errorResponse[key].path] = {
                         path: errorResponse[key].path,
                         message: errorResponse[key].message
-                    })
+                    };
                 }
-                setErrors(errorList);
-            });
+                setErrors(errorDict);
+            })
     };
 
     return (
