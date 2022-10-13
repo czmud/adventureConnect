@@ -13,36 +13,41 @@ import { useNavigate } from 'react-router-dom';
 const boxStyle = {
     background: 'rgba(200, 200, 200)',
     width: '60%',
-    height: '900px',
-    margin: '80px 20% 0px',
-    borderRadius: '40px',
-    padding: '15px'
+    height: 'auto',
+    margin: '20px 20% 0px',
+    borderRadius: '40px'
 }
 const boxStyle2 = {
-    background: 'rgba(200, 200, 200)',
-    width: '60%',
-    height: '400px',
-    margin: '80px 20% 0px',
-    borderRadius: '40px',
-    padding: '15px'
+    background: 'white',
+    width: '100%',
+    borderRadius: '0 0 20px 20px',
+    zIndex: 2
+}
+const addForm = {
+    width: '85%',
+    height: '3em',
+    margin: '0 0 15% 0'
 }
 const splitForm = {
     display: 'flex',
-    justifyContent: 'space-around'
+    justifyContent: 'space-between',
+    marginBottom: '8%'
 }
 const formSide = {
-
-    width: '90%',
-    positions: 'relative'
+    width:'47%',
+    positions: 'relative',
+    padding: '0 2%'
 }
 
 const submitStyle ={
-    background: 'gray',
+    background: 'black',
+    color: 'white',
     width: '100px',
     borderTopLeftRadius: '5px',
     borderTopRightRadius: '5px',
-    margin: '20px 5px',
-    postion: 'relative'
+    margin: '0 5px 4%',
+    postion: 'relative',
+    boxShadow: '2px 2px darkgrey'
 }
 
 const ITEM_HEIGHT = 48;
@@ -51,7 +56,7 @@ const MenuProps = {
     PaperProps: {
         style: {
         maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
+        width:'20%'
         },
     },
     };
@@ -194,11 +199,9 @@ const EventForm = (props: EventFormProps) => {
             <div style={ formSide }>
                 <TextField
                 required
-                fullWidth
-
+                style={{width: '100%'}}
                 value={eventName}
                 onChange = { onNameChange }
-
                 id="outlined-name"
                 label="Event Name"
                 InputLabelProps={{
@@ -211,11 +214,9 @@ const EventForm = (props: EventFormProps) => {
                 
                 <TextField
                 required
-                fullWidth
-
+                style={{ width: '100%' }}
                 value={eventDescription}
                 onChange={ onDescriptionChange }
-
                 id="outlined-multiline-static"
                 InputLabelProps={{
                     shrink: true
@@ -228,9 +229,10 @@ const EventForm = (props: EventFormProps) => {
                 <br/><br/><br/>
 
 
+                
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DateTimePicker
-                    renderInput={(props) => <TextField {...props} />}
+                    renderInput={(props) => <TextField {...props}style={{width: '100%'}} />}
                     label="DateTimePicker"
                     value={eventDate}
                     onChange={ (value: React.ChangeEvent<HTMLInputElement> | null) => {if (value){
@@ -241,27 +243,29 @@ const EventForm = (props: EventFormProps) => {
                 <br/><br/><br/>
 
 
-                <FormControl sx={{ m: 1, width: 250, mt: 1 }}>
+                <FormControl sx={{ m: 1, width: '100%', mt: 1 }}>
                     <InputLabel
+                    sx={{position: 'relative', top: '20px',left: '-40px'
+                }}
                     variant="standard"
                     htmlFor="native-select">Select Event Type</InputLabel>
                     <Select
                     displayEmpty
                     value={ eventType }
                     onChange= {(e: SelectChangeEvent<string>, child: ReactNode) => onTypeChange(e) }
-                    input={<OutlinedInput />}
+                    input={<OutlinedInput sx={{position:'relative', top:'10px'}}/>}
                     renderValue={(selected) => {
                         return selected
                     }}
+                    sx={{position: 'relative',
+                    top: '10px'}}
                     MenuProps={MenuProps}
                     inputProps={{ 'aria-label': 'Without label' }}
                 >
-                        <MenuItem disabled value="">
-                        <em>Placeholder</em>
-                        </MenuItem>
                     {types.map((name, idx) => (
                         <MenuItem
                         key={idx}
+                        sx={{width: '100%', paddingLeft: '10%'}}
                         value={name}
                         >
                             {name}
@@ -286,7 +290,7 @@ const EventForm = (props: EventFormProps) => {
                     min={0}
                     max={5}
                     sx={{
-                        width: 250
+                        width: '100%'
                     }}
                     components={{
                     ValueLabel: ValueLabelComponent,
@@ -295,7 +299,7 @@ const EventForm = (props: EventFormProps) => {
                 </Box>
                 <br/><br/>
 
-                <Accordion sx={{ width: '80%', zIndex: '100'}}>
+                <Accordion sx={{zIndex: 20, display: 'flex', flexDirection: 'column'}}>
                     <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
@@ -303,42 +307,103 @@ const EventForm = (props: EventFormProps) => {
                     >
                         <Typography>Event Organizer</Typography>
                     </AccordionSummary>
-                    <AccordionDetails>
+                    <AccordionDetails sx={{position: 'absolute', left: '5%', right: '5%', margin: '0', padding: '0' }}>
                         <Typography>
+                            <Box style={ boxStyle2 }>
                             <TextField
+                            style={ addForm }
                             required
                             id="outlined-name"
                             label="Organize Name"
 
                             value={""+thisEvent.organizer.firstName+ ' '+ thisEvent.organizer.lastName}
-
                             InputProps={{
                                 readOnly: true,
                             }}
                             /><br/>
-
                             <TextField
+                            style={ addForm }
                             required
                             id="outlined-name"
                             label="Organizer Email"
                             type='email'
-
                             value={thisEvent.organizer.email}
-
                             InputProps={{
                                 readOnly: true,
                             }}
-                            /><br/>
+                            /></Box><br/>
                         </Typography>
                     </AccordionDetails>
                 </Accordion>
-                <br/><br/><br/><br/><br/><br/><br/>
-
-
+                <br/>
                 
-                <Paper sx={{ width: '70%', margin: '0px 15%', overflow: 'scroll', postions: 'absolute', zIndex: '25'}}>
+                <div>
+                <Accordion sx={{zIndex: 10, display: 'flex', flexDirection: 'column',}}>
+                    <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                    >
+                    
+                        <Typography >Add New Users</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails sx={{position: 'absolute', left: '5%', right: '5%', margin: '0', padding: '0' }}>
+                        <Typography>
+                            <Box
+                            style={ boxStyle2 }
+                            component="form"
+                            sx={{
+                            '& .MuiTextField-root': { m: 1, width: '25ch' },
+                            }}
+                            noValidate
+                            autoComplete="off"
+                            onSubmit={(e: React.FormEvent) => {e.preventDefault(); onNewUser(e) }}>
+                            
+                                <TextField
+                                style= {addForm}
+                                id="outlined-name"
+                                label="First Name"
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onUserFirstNameChange(e) }
+                                value={userFirstName}
+                                />
+
+                                <TextField
+                                style= {addForm}
+                                id="outlined-name
+                                "
+                                label="Last Name"
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onUserLastNameChange(e) }
+                                value={userLastName}
+                                />
+
+                                <TextField
+                                style= {addForm}
+                                id="outlined-name"
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
+                                label="Email"
+                                value={userEmail}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onUserEmailChange(e) }
+                                type='email'
+                                />
+
+                                <Input style={ submitStyle } type='submit' value='Add New'/>
+                        </Box>
+                        </Typography>
+                    </AccordionDetails>
+                </Accordion>
+                </div><br/><br/><br/><br/>
+                
+                <Paper sx={{ width: '70%', margin: '0px 15%', overflow: 'scroll'}}>
                 <TableContainer sx={{ maxHeight: 160 }}>
-                <Table size='small' stickyHeader sx={{ minWidth: 400 }} aria-label="customized table">
+                <Table size='small' stickyHeader  aria-label="customized table">
                     <TableHead>
                         <TableRow>
                             <StyledTableCell>Users Going: </StyledTableCell>
@@ -361,74 +426,14 @@ const EventForm = (props: EventFormProps) => {
                 </Table>
                 </TableContainer>
                 </Paper>
-
             </div>
         </div>
+        
 
     <Input onClick={()=> {nav('/dashboard')}} style={ submitStyle } type='submit' value="Cancel"/>
     <Input style={ submitStyle } type='submit' value={ btn }/>
     
     </Box>
-    <div z-Index='1' style={ splitForm }>
-        <div style={ formSide }></div>
-        <div style={ formSide }>
-            <Accordion sx={{width: '24%', position: 'absolute', top: '520px', right: '435px', zIndex: '50'}}>
-                <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-                >
-                    <Typography>Add New Users</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    <Typography>
-                        <Box
-                        style={ boxStyle2 }
-                        component="form"
-                        sx={{
-                        '& .MuiTextField-root': { m: 1, width: '25ch' },
-                        }}
-                        noValidate
-                        autoComplete="off"
-                        onSubmit={(e: React.FormEvent) => {e.preventDefault(); onNewUser(e) }}>
-                        
-                            <TextField
-                            id="outlined-name"
-                            label="First Name"
-                            placeholder="User's First"
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => onUserFirstNameChange(e) }
-                            value={userFirstName}
-                            helperText="Required: 2+ Characters!"
-                            />
-                            <br/>
-
-                            <TextField
-                            id="outlined-name
-                            "
-                            label="Last Name"
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => onUserLastNameChange(e) }
-                            value={userLastName}
-                            helperText="Required: 2+ Characters!"
-                            />
-                            <br/>
-
-                            <TextField
-                            id="outlined-name"
-                            label="Email"
-                            value={userEmail}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => onUserEmailChange(e) }
-                            type='email'
-                            helperText="Required: Valid email"
-                            />
-                            <br/>
-
-                            <Input style={ submitStyle } type='submit' value='Add New'/>
-                    </Box>
-                    </Typography>
-                </AccordionDetails>
-            </Accordion>
-        </div>
-    </div>
     </>
     )
 }
