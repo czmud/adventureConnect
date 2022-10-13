@@ -3,8 +3,10 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 
 const buttonStyle={
-    height: '30%',
+    maxHeight: '40%',
+    minHeight: '20%',
     width: '8%',
+    fontSize: '1.35vw'
 }
 
 export const LogoutButton = () => {
