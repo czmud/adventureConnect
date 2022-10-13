@@ -76,7 +76,6 @@ const LoginForm = () => {
             .then( () => successCallback())
             .catch( errors => {
                 const errorResponse = errors.response.data.errors;
-                console.log(errorResponse)
                 const errorDict: { [path: string]: FormErrors } = {};
                 for( const key of Object.keys(errorResponse)){
                     errorDict[errorResponse[key].path] = {
