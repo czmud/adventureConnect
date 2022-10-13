@@ -1,7 +1,6 @@
-import 'dotenv/config';
 import mongoose from "mongoose";
-const mongoUri: string = process.env.MONGODB_URI!;
+import { env } from "../util/environment"
 
-mongoose.connect(mongoUri)
+mongoose.connect( env.MONGODB_URI )
 	.then(() => console.log("Established a connection to the database"))
 	.catch(err => console.log("Something went wrong when connecting to the database", err));
