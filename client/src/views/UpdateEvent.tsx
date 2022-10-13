@@ -16,7 +16,7 @@ const UpdateEvent = () => {
     const { id } = useParams();
     const [thisEvent, setThisEvent] = React.useState<EventModelForView>(new EventModelForView('','','','', new Date(), 1, new Organizer('fName', 'lName', 'email'), []));
     const [loaded, setLoaded] = React.useState(false);
-    const [errors, setErrors] = React.useState<FormErrors[]>([]);
+    const [errors, setErrors] = React.useState<{ [path: string]: FormErrors }>({});
     const nav = useNavigate();
 
     React.useEffect(() => {
@@ -44,13 +44,16 @@ const UpdateEvent = () => {
 
                 nav('/dashboard');
             })
-            .catch(err=>{
-                const errorResponse = err.response.data.error.errors;
-                const errorArr = [];
-                for (const key of Object.keys(errorResponse)) {
-                    errorArr.push(errorResponse[key].message)
+            .catch( errors => {
+                const errorResponse = errors.response.data.errors;
+                const errorDict: { [path: string]: FormErrors } = {};
+                for( const key of Object.keys(errorResponse)){
+                    errorDict[errorResponse[key].path] = {
+                        path: errorResponse[key].path,
+                        message: errorResponse[key].message
+                    };
                 }
-            setErrors(errorArr);
+                setErrors(errorDict);
             })
     }
 
