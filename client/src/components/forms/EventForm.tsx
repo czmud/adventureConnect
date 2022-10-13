@@ -245,7 +245,7 @@ const EventForm = (props: EventFormProps) => {
 
                 <FormControl sx={{ m: 1, width: '100%', mt: 1 }}>
                     <InputLabel
-                    sx={{position: 'relative', top: '20px',left: '-40px'
+                    sx={{position: 'relative', top: '20px',left: '-10%', fontSize: 'min(2vw, 15px)',
                 }}
                     variant="standard"
                     htmlFor="native-select">Select Event Type</InputLabel>
