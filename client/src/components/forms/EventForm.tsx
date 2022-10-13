@@ -108,7 +108,7 @@ interface EventFormProps{
     btn: string;
     event?: EventModel; // can use a '?' to mark option types in an interface (same as in classes/types etc.)
     creator: Organizer;
-    formErrors: FormErrors[];
+    formErrors: { [path: string]: FormErrors };
     submitCallback: Function;
 }
 
