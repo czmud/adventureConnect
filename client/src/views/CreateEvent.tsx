@@ -15,24 +15,23 @@ interface FormErrors{
 
 const CreateEvent = () => {
     const nav = useNavigate();
-    const [ errors, setErrors ] = React.useState<FormErrors[]>([]);
+    const [ errors, setErrors ] = React.useState<{ [path: string]: FormErrors }>({});
     const [ currentOrganizer, setCurrentOrganizer ] = React.useState<Organizer>(new Organizer());
 
-//! ======== Needs Create Routes==============
     const onCreate = (thisEvent: EventModel) => {
         axios.post(process.env.REACT_APP_SERVER_URL+'/api/events/new', thisEvent)
             .then( () => nav('/dashboard'))
             .catch( errors => {
                 const errorResponse = errors.response.data.errors;
-                const errorList: FormErrors[] = [];
+                const errorDict: { [path: string]: FormErrors } = {};
                 for( const key of Object.keys(errorResponse)){
-                    errorList.push({
+                    errorDict[errorResponse[key].path] = {
                         path: errorResponse[key].path,
                         message: errorResponse[key].message
-                    })
+                    };
                 }
-                setErrors(errorList);
-            })
+                setErrors(errorDict);
+            });
     }
 
 
