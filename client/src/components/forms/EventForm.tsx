@@ -8,6 +8,7 @@ import EventModel from '../../models/EventModel'
 import Organizer from '../../models/Organizer'
 import User from '../../models/User'
 import { useNavigate } from 'react-router-dom';
+const mediaQuery = require('css-mediaquery')
 
 //===========All Styling Content======
 const boxStyle = {
@@ -114,7 +115,7 @@ interface EventFormProps{
 
 const EventForm = (props: EventFormProps) => {
     const nav = useNavigate();
-    const { title, btn, event, creator, submitCallback } = props;
+    const { title, btn, event, creator, submitCallback, formErrors } = props;
     
     const thisEvent =  event || new EventModel('','','', new Date(), 1, creator, []);
 
@@ -181,6 +182,37 @@ const EventForm = (props: EventFormProps) => {
         submitCallback(thisEvent);
     }
 
+    function smallMatch(wWidth: number): boolean {
+        return mediaQuery.match('screen and (max-width: 626)', {
+            type : 'screen',
+            width: wWidth
+        });}
+    let small: boolean = smallMatch(window.innerWidth)
+
+    function largeMatch(wWidth: number): boolean {
+        return mediaQuery.match('screen and (min-width: 1200)', {
+            type : 'screen',
+            width: wWidth
+        });}
+    let large: boolean = largeMatch(window.innerWidth)
+
+    function handleResize() {
+            let small2 = smallMatch(window.innerWidth);
+            let large2 = largeMatch(window.innerWidth);
+            
+            if (small === small2 && large === large2){
+
+            } else {
+            small = small2;
+            large = large2;
+            small === true ? window.location.reload() : 
+            large === true ? window.location.reload() : 
+            window.location.reload()
+            }
+    }
+    
+    window.addEventListener('resize', handleResize)
+
     return (
     <>
     <Box
@@ -193,10 +225,24 @@ const EventForm = (props: EventFormProps) => {
     autoComplete="off"
 
     onSubmit={(e: React.FormEvent) => {e.preventDefault(); submitHandler() }}>
-
         <h1>{ title }</h1>
         <div style={ splitForm }>
             <div style={ formSide }>
+
+                {formErrors.name ? 
+                <TextField
+                error
+                required
+                style={{width: '100%'}}
+                value={eventName}
+                onChange = { onNameChange }
+                id="outlined-error"
+                label="Name Error"
+                InputLabelProps={{
+                    shrink: true
+                }}
+                helperText={formErrors.name.message}
+                /> :
                 <TextField
                 required
                 style={{width: '100%'}}
@@ -208,10 +254,25 @@ const EventForm = (props: EventFormProps) => {
                     shrink: true
                 }}
                 helperText="Required: 2+ Characters!"
-                />
+                />}
                 <br/><br/><br/>
 
-                
+                {formErrors.description ? 
+                <TextField
+                error
+                required
+                style={{ width: '100%' }}
+                value={eventDescription}
+                onChange={ onDescriptionChange }
+                id="outlined-multiline-static"
+                InputLabelProps={{
+                    shrink: true
+                }}
+                label="Description Error"
+                multiline
+                rows={4}
+                helperText={formErrors.description.message}
+                /> :
                 <TextField
                 required
                 style={{ width: '100%' }}
@@ -225,21 +286,33 @@ const EventForm = (props: EventFormProps) => {
                 multiline
                 rows={4}
                 helperText="Required: 10+ Characters!"
-                />
+                />}
                 <br/><br/><br/>
 
 
-                
+                { formErrors.date ? 
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DateTimePicker
-                    renderInput={(props) => <TextField {...props}style={{width: '100%'}} />}
-                    label="DateTimePicker"
+                    renderInput={(props) => <TextField {...props} error style={{width: '100%', marginBottom: '-5%'}} helperText={formErrors.date.message}/>}
+                    label="DateTimePicker Error"
                     value={eventDate}
+                    disablePast= {true}
                     onChange={ (value: React.ChangeEvent<HTMLInputElement> | null) => {if (value){
                         onDateChange(value)
                     }}
                     }/>
-                </LocalizationProvider>
+                </LocalizationProvider> :
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DateTimePicker
+                    renderInput={(props) => <TextField {...props} style={{width: '100%'}}/>}
+                    label="DateTimePicker"
+                    value={eventDate}
+                    // disablePast= {true}
+                    onChange={ (value: React.ChangeEvent<HTMLInputElement> | null) => {if (value){
+                        onDateChange(value)
+                    }}
+                    }/>
+                </LocalizationProvider>}
                 <br/><br/><br/>
 
 
@@ -249,6 +322,29 @@ const EventForm = (props: EventFormProps) => {
                 }}
                     variant="standard"
                     htmlFor="native-select">Select Event Type</InputLabel>
+                    { formErrors.type ? <Select
+                    displayEmpty
+                    value={ eventType }
+                    onChange= {(e: SelectChangeEvent<string>, child: ReactNode) => onTypeChange(e) }
+                    input={<OutlinedInput error sx={{position:'relative', top:'10px'}}/>}
+                    renderValue={(selected) => {
+                        return selected
+                    }}
+                    sx={{position: 'relative',
+                    top: '10px'}}
+                    MenuProps={MenuProps}
+                    inputProps={{ 'aria-label': 'Without label' }}
+                >
+                    {types.map((name, idx) => (
+                        <MenuItem
+                        key={idx}
+                        sx={{width: '100%', paddingLeft: '10%'}}
+                        value={name}
+                        >
+                            {name}
+                        </MenuItem>
+                ))}
+                    </Select> :
                     <Select
                     displayEmpty
                     value={ eventType }
@@ -271,7 +367,7 @@ const EventForm = (props: EventFormProps) => {
                             {name}
                         </MenuItem>
                 ))}
-                    </Select>
+                    </Select>}
                 </FormControl>
                 <br/><br/><br/>
 
@@ -335,71 +431,9 @@ const EventForm = (props: EventFormProps) => {
                         </Typography>
                     </AccordionDetails>
                 </Accordion>
-                <br/>
-                
-                <div>
-                <Accordion sx={{zIndex: 10, display: 'flex', flexDirection: 'column',}}>
-                    <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                    >
-                    
-                        <Typography >Add New Users</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails sx={{position: 'absolute', left: '5%', right: '5%', margin: '0', padding: '0' }}>
-                        <Typography>
-                            <Box
-                            style={ boxStyle2 }
-                            component="form"
-                            sx={{
-                            '& .MuiTextField-root': { m: 1, width: '25ch' },
-                            }}
-                            noValidate
-                            autoComplete="off"
-                            onSubmit={(e: React.FormEvent) => {e.preventDefault(); onNewUser(e) }}>
-                            
-                                <TextField
-                                style= {addForm}
-                                id="outlined-name"
-                                label="First Name"
-                                InputLabelProps={{
-                                    shrink: true
-                                }}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onUserFirstNameChange(e) }
-                                value={userFirstName}
-                                />
+                <br/><br/><br/><br/>
+                <br/><br/><br/><br/>
 
-                                <TextField
-                                style= {addForm}
-                                id="outlined-name
-                                "
-                                label="Last Name"
-                                InputLabelProps={{
-                                    shrink: true
-                                }}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onUserLastNameChange(e) }
-                                value={userLastName}
-                                />
-
-                                <TextField
-                                style= {addForm}
-                                id="outlined-name"
-                                InputLabelProps={{
-                                    shrink: true
-                                }}
-                                label="Email"
-                                value={userEmail}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onUserEmailChange(e) }
-                                type='email'
-                                />
-
-                                <Input style={ submitStyle } type='submit' value='Add New'/>
-                        </Box>
-                        </Typography>
-                    </AccordionDetails>
-                </Accordion>
-                </div><br/><br/><br/><br/>
                 
                 <Paper sx={{ width: '70%', margin: '0px 15%', overflow: 'scroll'}}>
                 <TableContainer sx={{ maxHeight: 160 }}>
@@ -428,12 +462,197 @@ const EventForm = (props: EventFormProps) => {
                 </Paper>
             </div>
         </div>
-        
 
     <Input onClick={()=> {nav('/dashboard')}} style={ submitStyle } type='submit' value="Cancel"/>
     <Input style={ submitStyle } type='submit' value={ btn }/>
     
     </Box>
+                        
+    { small ? 
+    <Accordion sx={{zIndex: 10, display: 'flex', flexDirection: 'column', width: '26%', position: 'relative', bottom: '360px', left: '53%'}}>
+    <AccordionSummary
+    expandIcon={<ExpandMoreIcon />}
+    aria-controls="panel1a-content"
+    id="panel1a-header"
+    >
+    
+        <Typography >Add New Users</Typography>
+    </AccordionSummary>
+    <AccordionDetails sx={{position: 'absolute', left: '5%', right: '5%', margin: '0', padding: '0' }}>
+        <Typography>
+            <Box
+            style={ boxStyle2 }
+            component="form"
+            sx={{
+            '& .MuiTextField-root': { m: 1, width: '25ch' },
+            }}
+            noValidate
+            autoComplete="off"
+            onSubmit={(e: React.FormEvent) => {e.preventDefault(); onNewUser(e) }}>
+            
+                <TextField
+                style= {addForm}
+                id="outlined-name"
+                label="First Name"
+                InputLabelProps={{
+                    shrink: true
+                }}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onUserFirstNameChange(e) }
+                value={userFirstName}
+                />
+
+                <TextField
+                style= {addForm}
+                id="outlined-name
+                "
+                label="Last Name"
+                InputLabelProps={{
+                    shrink: true
+                }}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onUserLastNameChange(e) }
+                value={userLastName}
+                />
+
+                <TextField
+                style= {addForm}
+                id="outlined-name"
+                InputLabelProps={{
+                    shrink: true
+                }}
+                label="Email"
+                value={userEmail}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onUserEmailChange(e) }
+                type='email'
+                />
+
+                <Input style={ submitStyle } type='submit' value='Add New'/>
+        </Box>
+        </Typography>
+    </AccordionDetails>
+</Accordion> : 
+    large ? 
+    <Accordion id="NewEventGoer" sx={{zIndex: 10, display: 'flex', flexDirection: 'column', width: '26%', position: 'relative', bottom: '440px', left: '53%'}}>
+        <AccordionSummary
+        expandIcon={<ExpandMoreIcon />}
+        aria-controls="panel1a-content"
+        id="panel1a-header"
+        >
+        
+            <Typography >Add New Users</Typography>
+        </AccordionSummary>
+        <AccordionDetails sx={{position: 'absolute', left: '5%', right: '5%', margin: '0', padding: '0' }}>
+            <Typography>
+                <Box
+                style={ boxStyle2 }
+                component="form"
+                sx={{
+                '& .MuiTextField-root': { m: 1, width: '25ch' },
+                }}
+                noValidate
+                autoComplete="off"
+                onSubmit={(e: React.FormEvent) => {e.preventDefault(); onNewUser(e) }}>
+                
+                    <TextField
+                    style= {addForm}
+                    id="outlined-name"
+                    label="First Name"
+                    InputLabelProps={{
+                        shrink: true
+                    }}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => onUserFirstNameChange(e) }
+                    value={userFirstName}
+                    />
+
+                    <TextField
+                    style= {addForm}
+                    id="outlined-name
+                    "
+                    label="Last Name"
+                    InputLabelProps={{
+                        shrink: true
+                    }}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => onUserLastNameChange(e) }
+                    value={userLastName}
+                    />
+
+                    <TextField
+                    style= {addForm}
+                    id="outlined-name"
+                    InputLabelProps={{
+                        shrink: true
+                    }}
+                    label="Email"
+                    value={userEmail}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => onUserEmailChange(e) }
+                    type='email'
+                    />
+
+                    <Input style={ submitStyle } type='submit' value='Add New'/>
+            </Box>
+            </Typography>
+        </AccordionDetails>
+    </Accordion> : 
+    <Accordion sx={{zIndex: 10, display: 'flex', flexDirection: 'column', width: '26%', position: 'relative', bottom: '400px', left: '53%'}}>
+    <AccordionSummary
+    expandIcon={<ExpandMoreIcon />}
+    aria-controls="panel1a-content"
+    id="panel1a-header"
+    >
+    
+        <Typography >Add New Users</Typography>
+    </AccordionSummary>
+    <AccordionDetails sx={{position: 'absolute', left: '5%', right: '5%', margin: '0', padding: '0' }}>
+        <Typography>
+            <Box
+            style={ boxStyle2 }
+            component="form"
+            sx={{
+            '& .MuiTextField-root': { m: 1, width: '25ch' },
+            }}
+            noValidate
+            autoComplete="off"
+            onSubmit={(e: React.FormEvent) => {e.preventDefault(); onNewUser(e) }}>
+            
+                <TextField
+                style= {addForm}
+                id="outlined-name"
+                label="First Name"
+                InputLabelProps={{
+                    shrink: true
+                }}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onUserFirstNameChange(e) }
+                value={userFirstName}
+                />
+
+                <TextField
+                style= {addForm}
+                id="outlined-name
+                "
+                label="Last Name"
+                InputLabelProps={{
+                    shrink: true
+                }}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onUserLastNameChange(e) }
+                value={userLastName}
+                />
+
+                <TextField
+                style= {addForm}
+                id="outlined-name"
+                InputLabelProps={{
+                    shrink: true
+                }}
+                label="Email"
+                value={userEmail}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onUserEmailChange(e) }
+                type='email'
+                />
+
+                <Input style={ submitStyle } type='submit' value='Add New'/>
+        </Box>
+        </Typography>
+    </AccordionDetails>
+</Accordion>}
     </>
     )
 }
