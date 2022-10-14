@@ -20,7 +20,7 @@ export const LogoutButton = () => {
         event.preventDefault();
         axios.post(process.env.REACT_APP_SERVER_URL+'/api/organizers/logout')
             .then(() => successCallback())
-            .catch(errors => console.log(errors));
+            .catch(errors => console.error(errors));
     }
 
     return(

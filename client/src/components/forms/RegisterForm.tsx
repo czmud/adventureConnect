@@ -79,15 +79,19 @@ const RegisterForm = () => {
         axios.post(process.env.REACT_APP_SERVER_URL+'/api/organizers/register', oneOrganizer )
             .then( () => successCallback() )
             .catch( errors => {
-                const errorResponse = errors.response.data.errors;
-                const errorDict: { [path: string]: FormErrors } = {};
-                for( const key of Object.keys(errorResponse)){
-                    errorDict[errorResponse[key].path] = {
-                        path: errorResponse[key].path,
-                        message: errorResponse[key].message
-                    };
+                const errorResponse = errors.response?.data.errors;
+                if(errorResponse){
+                    const errorDict: { [path: string]: FormErrors } = {};
+                    for( const key of Object.keys(errorResponse)){
+                        errorDict[errorResponse[key].path] = {
+                            path: errorResponse[key].path,
+                            message: errorResponse[key].message
+                        };
+                    }
+                    setErrors(errorDict);
+                } else {
+                    console.error(errors)
                 }
-                setErrors(errorDict);
             })
     };
 

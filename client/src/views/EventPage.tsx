@@ -22,7 +22,7 @@ const EventPage = () => {
                 res.data.event.organizer,
                 res.data.event.users
             )))
-            .catch(errors => console.log(errors))
+            .catch(errors => console.error(errors))
     },[id])
     return (<>
         <HeaderBar title={thisEvent.name} btnTitle='Logout' btnRoute='logout'/>
