@@ -15,7 +15,7 @@ const DeleteButton = (props: DeleteButtonProps) => {
     const deleteEvent = () => {
         axios.delete(process.env.REACT_APP_SERVER_URL+'/api/'+entityType+'/delete/'+_id)
             .then( () => successCallback() )
-            .catch(errors => console.log(errors));
+            .catch(errors => console.error(errors));
     };
 
     return (
