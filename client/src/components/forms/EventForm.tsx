@@ -391,7 +391,7 @@ const EventForm = (props: EventFormProps) => {
                     components={{
                     ValueLabel: ValueLabelComponent,
                     }}/>
-                    <FormHelperText id="my-helper-text">0 (ease) - 5 (intense)</FormHelperText>
+                    <FormHelperText id="my-helper-text">0 (easy) - 5 (intense)</FormHelperText>
                 </Box>
                 <br/><br/>
 

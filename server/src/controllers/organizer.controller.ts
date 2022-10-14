@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import 'dotenv/config';
+import { env } from "../util/environment"
 import { Organizer } from "../models/organizer.model";
 import { Request, Response } from "express";
 
@@ -24,7 +24,7 @@ export const createNewOrganizer = (req: Request, res: Response) => {
         .then( newlyCreatedOrganizer => {
             const organizerToken = jwt.sign({
                 id: newlyCreatedOrganizer._id
-            }, process.env.SECRET_KEY!);
+            }, env.SECRET_KEY);
             
             res        
                 .cookie("organizerToken", organizerToken, {httpOnly: true})  
@@ -68,7 +68,7 @@ export const logOrganizerIn = async(req: Request, res: Response) => {
 
     const organizerToken = jwt.sign({
         id: organizer._id
-    }, process.env.SECRET_KEY!);
+    }, env.SECRET_KEY);
 
     res
         .cookie("organizerToken", organizerToken, {httpOnly: true})  
