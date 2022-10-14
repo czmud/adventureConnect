@@ -54,7 +54,7 @@ const Main = () => {
                 setAllEvents(response.data.events);
                 setLoaded(true);
             })
-            .catch(errors => console.log(errors));
+            .catch(errors => console.error(errors));
     }, []);
 
     return (<div >

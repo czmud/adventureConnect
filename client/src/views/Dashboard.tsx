@@ -60,7 +60,7 @@ const Dashboard = () => {
                 response.data.organizer.lastName,
                 response.data.organizer.email
             )))
-            .catch(errors => console.log(errors));
+            .catch(errors => console.error(errors));
     },[]);
 
     function dateChange(date: string){

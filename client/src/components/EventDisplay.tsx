@@ -67,7 +67,7 @@ const EventDisplay = (props: EventDisplayProps) => {
                 response.data.organizer.lastName,
                 response.data.organizer.email
             )))
-            .catch(errors => console.log(errors));
+            .catch(errors => console.error(errors));
     },[]);
 
     return (<>
