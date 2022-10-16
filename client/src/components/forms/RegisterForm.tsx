@@ -88,6 +88,7 @@ const RegisterForm = () => {
                             message: errorResponse[key].message
                         };
                     }
+                    console.log(errorDict);
                     setErrors(errorDict);
                 } else {
                     console.error(errors)
@@ -106,25 +107,64 @@ const RegisterForm = () => {
         autoComplete="off"
         onSubmit={(event: React.FormEvent) => submitRegistrationForm(event, oneOrganizer, redirectAfterSuccessfulRegistration) }>
             <h1>Register as Organizer</h1>
+    
+    { errors.firstName?
+    <TextField
+    error
+    required
+    id="outlined-name"
+    label="Name Error"
+    name="firstName"
+    onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event)}
+    placeholder="First Name"
+    helperText={ errors.firstName.message }
+    /> :
+
     <TextField
     required
     id="outlined-name"
     label="First Name"
     name="firstName"
     onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event)}
-    placeholder="Placeholder"
+    placeholder="First Name"
     helperText="Required: 2+ Characters!"
-    /><br/>
+    />}<br/>
 
+    { errors.lastName?
+    <TextField
+    error
+    required
+    id="outlined-name"
+    label="Name Error"
+    name="lastName"
+    onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event)}
+    placeholder="Last Name"
+    helperText={ errors.lastName.message }
+    /> :
+    
     <TextField
     required
     id="outlined-name"
     label="Last Name"
     name="lastName"
     onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event)}
+    placeholder="Last Name"
     helperText="Required: 2+ Characters!"
-    /><br/>
+    />}<br/>
 
+    { errors.email?
+    <TextField
+    error
+    required
+    id="outlined-name"
+    label="Email Error"
+    type='email'
+    name="email"
+    onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event)}
+    placeholder="Email"
+    helperText={ errors.email.message }
+    /> :
+    
     <TextField
     required
     id="outlined-name"
@@ -132,56 +172,121 @@ const RegisterForm = () => {
     type='email'
     name="email"
     onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event)}
+    placeholder="Email"
     helperText="Required: Valid email"
-    /><br/>
+    />}<br/>
 
+    { errors.password?
     <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-        <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+        <InputLabel error htmlFor="outlined-adornment-password">
+            Password Error
+        </InputLabel>
         <OutlinedInput
-            id="outlined-adornment-password"
-            type={values.showPassword ? 'text' : 'password'}
-            name="password"
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event)}
-            endAdornment={
+        error id="outlined-adornment-password"
+        type={values.showPassword ? 'text' : 'password'}
+        name="password"
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event)}
+        endAdornment={
             <InputAdornment position="end">
                 <IconButton
                 aria-label="toggle password visibility"
                 onClick={handleClickShowPassword}
                 onMouseDown={handleMouseDownPassword}
                 edge="end">
-                {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
-                </InputAdornment>
-            }
-            label="Password"
-            />
-        <FormHelperText>Required: 8+ Characters</FormHelperText>
-        </FormControl>
-        <br/>
+            </InputAdornment>
+        }
+        label="Password"
+        />
+        <FormHelperText error>
+            { errors.password.message }
+        </FormHelperText>
+    </FormControl> :
 
-        <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-        <InputLabel htmlFor="outlined-adornment-password">Confirm Password</InputLabel>
+    <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+        <InputLabel htmlFor="outlined-adornment-password">
+            Password
+        </InputLabel>
         <OutlinedInput
-            id="outlined-adornment-password"
-            type={values.showConfirmPassword ? 'text' : 'password'}
-            name="confirmPassword"
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event)}
-            endAdornment={
+        id="outlined-adornment-password"
+        type={values.showPassword ? 'text' : 'password'}
+        name="password"
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event)}
+        endAdornment={
+            <InputAdornment position="end">
+                <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleClickShowPassword}
+                onMouseDown={handleMouseDownPassword}
+                edge="end">
+                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+            </InputAdornment>
+        }
+        label="Password"
+        />
+        <FormHelperText>
+            Required: 8+ Characters
+        </FormHelperText>
+    </FormControl>}
+    <br/>
+
+    { errors.confirmPassword? 
+    <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+        <InputLabel error htmlFor="outlined-adornment-password">
+            Confirm Password
+        </InputLabel>
+        <OutlinedInput
+        error id="outlined-adornment-password"
+        type={values.showConfirmPassword ? 'text' : 'password'}
+        name="confirmPassword"
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event)}
+        endAdornment={
             <InputAdornment position="end">
                 <IconButton
                 aria-label="toggle password visibility"
                 onClick={handleClickShowConfirmPassword}
                 onMouseDown={handleMouseDownPassword}
                 edge="end">
-                {values.showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                    {values.showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
             </InputAdornment>
-            }
-            label="Confirm Password"
-            />
-        <FormHelperText>Required: Must match password</FormHelperText>
-        </FormControl>
-        <br/>
+        }
+        label="Confirm Password"
+        />
+        <FormHelperText error>
+            { errors.confirmPassword.message }
+        </FormHelperText>
+    </FormControl> :
+
+    <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+        <InputLabel htmlFor="outlined-adornment-password">
+            Confirm Password
+        </InputLabel>
+        <OutlinedInput
+        id="outlined-adornment-password"
+        type={values.showConfirmPassword ? 'text' : 'password'}
+        name="confirmPassword"
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event)}
+        endAdornment={
+            <InputAdornment position="end">
+                <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleClickShowConfirmPassword}
+                onMouseDown={handleMouseDownPassword}
+                edge="end">
+                    {values.showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+            </InputAdornment>
+        }
+        label="Confirm Password"
+        />
+        <FormHelperText>
+            Required: Must match password
+        </FormHelperText>
+    </FormControl>}
+    <br/>
 
     <Input style={ submitStyle } type='submit' value='Register'/>
     
