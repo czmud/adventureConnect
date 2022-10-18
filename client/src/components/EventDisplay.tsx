@@ -171,23 +171,34 @@ const EventDisplay = (props: EventDisplayProps) => {
                 </Item>
             </Grid>
             </Grid>
-        <Grid xs={12} md={12} lg={12}
-        container
+        <Grid container xs={12} md={12} lg={12}
+        spacing={2}
         >
-            { currentOrganizer.organizerId ?
+            { currentOrganizer.organizerId ? thisEvent.organizer.organizerId === currentOrganizer.organizerId ?
+            <>
             <Grid xs={6} md={6} lg={6}>
                 <Item onClick={() => nav('/dashboard') }>Dashboard</Item>
             </Grid>
+            <Grid xs={6} md={6} lg={6}>
+                <Item onClick={() => nav('/event/update/'+thisEvent._id) }>Edit</Item>
+            </Grid></>
             :
+            <>
+            <Grid xs={3} md={3} lg={3}></Grid>
+            <Grid xs={6} md={6} lg={6}>
+                <Item onClick={() => nav('/dashboard') }>Dashboard</Item>
+            </Grid>
+            <Grid xs={3} md={3} lg={3}></Grid>
+            </>
+            :
+            <>
+            <Grid xs={3} md={3} lg={3}></Grid>
             <Grid xs={6} md={6} lg={6}>
                 <Item onClick={() => nav('/') }>Home</Item>
             </Grid>
+            <Grid xs={3} md={3} lg={3}></Grid>
+            </>
             }
-            { thisEvent.organizer.organizerId === currentOrganizer.organizerId ?
-            <Grid xs={6} md={6} lg={6}>
-                <Item onClick={() => nav('/event/update/'+thisEvent._id) }>Edit</Item>
-            </Grid>
-            : null }
             </Grid>
         </Grid>
     </Box>
