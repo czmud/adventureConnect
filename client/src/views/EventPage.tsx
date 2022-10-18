@@ -5,6 +5,7 @@ import axios from 'axios'
 import { useParams } from 'react-router-dom'
 import Organizer from '../models/Organizer'
 import EventModelForView from '../models/EventModelForView'
+import { CommentsDisabledOutlined } from '@mui/icons-material'
 
 const EventPage = () => {
     const { id } = useParams()
@@ -23,10 +24,29 @@ const EventPage = () => {
                 res.data.event.users
             )))
             .catch(errors => console.error(errors))
-    },[id])
+    },[id]);
+
+    const [ currentOrganizer, setCurrentOrganizer ] = React.useState<Organizer>(new Organizer());
+    
+    React.useEffect(() => {
+        axios.get(process.env.REACT_APP_SERVER_URL+'/api/organizers/current')
+            .then(response => {
+                console.log(response);
+                setCurrentOrganizer( new Organizer(
+                response.data.organizer._id,
+                response.data.organizer.firstName,
+                response.data.organizer.lastName,
+                response.data.organizer.email
+            ))})
+            .catch(errors => console.error(errors));
+    },[]);
+
     return (<>
-        <HeaderBar title={thisEvent.name} btnTitle='Logout' btnRoute='logout'/>
-        <EventDisplay event={ thisEvent }/>
+        { currentOrganizer.organizerId ?
+        <HeaderBar title={thisEvent.name} btnTitle='Logout' btnRoute='logout'/> :
+
+        <HeaderBar title={thisEvent.name} btnTitle='Home' btnRoute=''/>}
+        <EventDisplay current={ currentOrganizer } event={ thisEvent }/>
     </>)
 }
 
