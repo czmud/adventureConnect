@@ -5,7 +5,6 @@ import axios from 'axios'
 import { useParams } from 'react-router-dom'
 import Organizer from '../models/Organizer'
 import EventModelForView from '../models/EventModelForView'
-import { CommentsDisabledOutlined } from '@mui/icons-material'
 
 const EventPage = () => {
     const { id } = useParams()
