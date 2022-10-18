@@ -18,7 +18,7 @@ axios.defaults.withCredentials = true;
 
 const tableStyle = {
     width: '90%',
-    margin: '10px 5%',
+    margin: '15% 5% 0',
     border: '2px solid black',
     maxHeight: '500px',
     overflow: 'scroll'
@@ -32,8 +32,9 @@ const imageStyle ={
     zIndex: '-1'
 }
 const buttonStyle={
-    width: '80%',
-    fontSize: '15px'
+    width: '200%',
+    fontSize: '15px',
+    marginLeft: '90%'
 }
 
 
@@ -71,8 +72,13 @@ const Dashboard = () => {
         const year: string = date.slice(0, 4);
         const  month: string = date.slice(5, 7);
         const day: string = date.slice(8, 10);
-        const hour: string = String(parseInt(date.slice(11,13)));
-        const min: string = String(parseInt(date.slice(14, 17)));
+
+        let hour: string = String(parseInt(date.slice(11,13)));
+        if (parseInt(hour) < 10){ hour = "0"+hour }
+
+        let min: string = String(parseInt(date.slice(14, 17)));
+        if (parseInt(min) < 10){ min = "0"+min }
+        
         const a_p: string = parseInt(hour) < 12 ? 'AM' : 'PM'
         
         return ''+MM[parseInt(month)-1]+' '+day+', '+year+' '+hour+':'+min+' '+a_p;
@@ -90,22 +96,20 @@ const Dashboard = () => {
 
     {loaded && <TableContainer style={ tableStyle } component={Paper}>
 
-        <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table stickyHeader aria-label="simple table">
         <TableHead>
             <TableRow>
-            <TableCell><strong><h1>Event Name</h1></strong></TableCell>
-            <TableCell align="right"><strong><h1>Type </h1></strong></TableCell>
-            <TableCell align="right"><strong><h1>Intensity</h1></strong>
+            <TableCell style={{width: '25%'}}><strong><h1>Event Name</h1></strong></TableCell>
+            <TableCell align="right" style={{width: '15%'}}><strong><h1>Type </h1></strong></TableCell>
+            <TableCell align="right" style={{width: '15%'}}><strong><h1>Intensity</h1></strong>
             </TableCell>
-            <TableCell align="right"><strong><h1>Date</h1></strong></TableCell>
-            <TableCell align="right"><strong><h1>Actions</h1></strong></TableCell>
+            <TableCell align="right" style={{width: '25%'}}><strong><h1>Date</h1></strong></TableCell>
+            <TableCell align="right" style={{width: '10%'}}><strong><h1>Actions</h1></strong></TableCell>
             </TableRow>
-            <TableRow>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell><button onClick={() => nav('/event/new')} style={ buttonStyle }> + New Event</button></TableCell>              
+            <TableRow >
+                <td style={{columnSpan: 'all'}}>
+                <button onClick={() => nav('/event/new')} style={ buttonStyle }> + New Event</button>
+                </td>           
             </TableRow>
         </TableHead>
         <TableBody>
