@@ -28,27 +28,27 @@ Adventure Connect is an application for users within the Pacific NorthWest to cr
 ### Photos:
 
 - Gues User Main Page
-<img alt="" src="/projectImages/advCon_guestDisplay.png" style="width:90%; height:500px;">
+<img alt="" src="/projectImages/advCon_guestDisplay.png" style="width:90%;">
 <br/>
 
 - Guest User Event Display
-<img alt="" src="/projectImages/advCon_guestEvent.png" style="width:90%; height:500px;">
+<img alt="" src="/projectImages/advCon_guestEvent.png" style="width:90%;">
 <br/>
 
 - Organizer Registration
-<img alt="" src="/projectImages/advCon_register.png" style="width:90%; height:500px;">
+<img alt="" src="/projectImages/advCon_register.png" style="width:90%;">
 <br/>
 
 - Organizer Main Page
-<img alt="" src="/projectImages/advCon_registeredMain.png" style="width:90%; height:500px;">
+<img alt="" src="/projectImages/advCon_registeredMain.png" style="width:90%;">
 <br/>
 
 - Event Creation Page
-<img alt="" src="/projectImages/advCon_createEvent.png" style="width:90%; height:500px;">
+<img alt="" src="/projectImages/advCon_createEvent.png" style="width:90%;">
 <br/>
 
 - Organizer's Event Display
-<img alt="" src="/projectImages/advCon_displayEvent.png" style="width:90%; height:500px;">
+<img alt="" src="/projectImages/advCon_displayEvent.png" style="width:90%;">
 
 
 ### How to Run Application locally:
