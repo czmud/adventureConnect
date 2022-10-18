@@ -16,7 +16,7 @@ Adventure Connect is an application for users within the Pacific NorthWest to cr
 
 - Guest Users:
   - Can view all events created within the PNW
-  - Can contact the orgnizer responsible via the provided email link to ask for participation in an event
+  - Can contact the organizer responsible via the provided email link to ask for participation in an event
 
 - Registered Organizers
   - Users that register gain access to Organizer authorization
@@ -25,9 +25,9 @@ Adventure Connect is an application for users within the Pacific NorthWest to cr
   - Organizers are responsible for managing event requests from other Users wishing to participate
 
 ### Deployment
-- Client [adventure-connect.vercel.app](https://adventure-connect.vercel.app)
+- Client - [adventure-connect.vercel.app](https://adventure-connect.vercel.app)
   - Deployed through Vercel for CI/CD pipeline to auto-deploy upon changes to Main
-- Server [adventure-connect-server.vercel.app](https://adventure-connect-server.vercel.app)
+- Server - [adventure-connect-server.vercel.app](https://adventure-connect-server.vercel.app)
   - Deployed as separate restful API (also through Vercel CI/CD)
   - CORS configured to allow access from Vercel Client URL
 - Database
@@ -36,7 +36,7 @@ Adventure Connect is an application for users within the Pacific NorthWest to cr
 
 ### Photos:
 
-- Gues User Main Page
+- Guest User Main Page
 <img alt="" src="/projectImages/advCon_guestDisplay.png" style="width:90%;">
 <br/>
 
