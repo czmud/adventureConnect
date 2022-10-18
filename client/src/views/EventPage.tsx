@@ -44,7 +44,7 @@ const EventPage = () => {
         { currentOrganizer.organizerId ?
         <HeaderBar title={thisEvent.name} btnTitle='Logout' btnRoute='logout'/> :
 
-        <HeaderBar title={thisEvent.name} btnTitle='Home' btnRoute=''/>}
+        <HeaderBar title={thisEvent.name} btnTitle='Login' btnRoute='login'/>}
         <EventDisplay current={ currentOrganizer } event={ thisEvent }/>
     </>)
 }
