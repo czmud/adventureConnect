@@ -16,7 +16,7 @@ Adventure Connect is an application for users within the Pacific NorthWest to cr
 
 - Guest Users:
   - Can view all events created within the PNW
-  - Can contact the orgnizer responsible via the provided email link to ask for participation in an event
+  - Can contact the organizer responsible via the provided email link to ask for participation in an event
 
 - Registered Organizers
   - Users that register gain access to Organizer authorization
@@ -24,31 +24,40 @@ Adventure Connect is an application for users within the Pacific NorthWest to cr
   - Organizers can add any guests already planning to attend at event creation
   - Organizers are responsible for managing event requests from other Users wishing to participate
 
+### Deployment
+- Client - [adventure-connect.vercel.app](https://adventure-connect.vercel.app)
+  - Deployed through Vercel for CI/CD pipeline to auto-deploy upon changes to Main
+- Server - [adventure-connect-server.vercel.app](https://adventure-connect-server.vercel.app/api/events)
+  - Deployed as separate restful API (also through Vercel CI/CD)
+  - CORS configured to allow access from Vercel Client URL
+- Database
+  - Deployed through MongoDB Atlas on M0 Cluster
+
 
 ### Photos:
 
-- Gues User Main Page
-<img alt="" src="/projectImages/advCon_guestDisplay.png" style="width:90%; height:500px;">
+- Guest User Main Page
+<img alt="" src="/projectImages/advCon_guestDisplay.png" style="width:90%;">
 <br/>
 
 - Guest User Event Display
-<img alt="" src="/projectImages/advCon_guestEvent.png" style="width:90%; height:500px;">
+<img alt="" src="/projectImages/advCon_guestEvent.png" style="width:90%;">
 <br/>
 
 - Organizer Registration
-<img alt="" src="/projectImages/advCon_register.png" style="width:90%; height:500px;">
+<img alt="" src="/projectImages/advCon_register.png" style="width:90%;">
 <br/>
 
 - Organizer Main Page
-<img alt="" src="/projectImages/advCon_registeredMain.png" style="width:90%; height:500px;">
+<img alt="" src="/projectImages/advCon_registeredMain.png" style="width:90%;">
 <br/>
 
 - Event Creation Page
-<img alt="" src="/projectImages/advCon_createEvent.png" style="width:90%; height:500px;">
+<img alt="" src="/projectImages/advCon_createEvent.png" style="width:90%;">
 <br/>
 
 - Organizer's Event Display
-<img alt="" src="/projectImages/advCon_displayEvent.png" style="width:90%; height:500px;">
+<img alt="" src="/projectImages/advCon_displayEvent.png" style="width:90%;">
 
 
 ### How to Run Application locally:
