@@ -51,24 +51,14 @@ const dropDownStyle = {
 
 interface EventDisplayProps{
     event: EventModelForView;
+    current: Organizer;
 }
 
 const EventDisplay = (props: EventDisplayProps) => {
     const [openOrg, setOpenOrg] = React.useState(false);
     const nav = useNavigate();
     const thisEvent = props.event;
-    const [ currentOrganizer, setCurrentOrganizer ] = React.useState<Organizer>(new Organizer());
-    
-    React.useEffect(() => {
-        axios.get(process.env.REACT_APP_SERVER_URL+'/api/organizers/current')
-            .then(response => setCurrentOrganizer( new Organizer(
-                response.data.organizer._id,
-                response.data.organizer.firstName,
-                response.data.organizer.lastName,
-                response.data.organizer.email
-            )))
-            .catch(errors => console.error(errors));
-    },[]);
+    const currentOrganizer = props.current;
 
     return (<>
     <Box sx={{ flexGrow: 1, margin: '0px 10%'}}>
