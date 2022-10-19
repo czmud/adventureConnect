@@ -51,24 +51,14 @@ const dropDownStyle = {
 
 interface EventDisplayProps{
     event: EventModelForView;
+    current: Organizer;
 }
 
 const EventDisplay = (props: EventDisplayProps) => {
     const [openOrg, setOpenOrg] = React.useState(false);
     const nav = useNavigate();
     const thisEvent = props.event;
-    const [ currentOrganizer, setCurrentOrganizer ] = React.useState<Organizer>(new Organizer());
-    
-    React.useEffect(() => {
-        axios.get(process.env.REACT_APP_SERVER_URL+'/api/organizers/current')
-            .then(response => setCurrentOrganizer( new Organizer(
-                response.data.organizer._id,
-                response.data.organizer.firstName,
-                response.data.organizer.lastName,
-                response.data.organizer.email
-            )))
-            .catch(errors => console.error(errors));
-    },[]);
+    const currentOrganizer = props.current;
 
     return (<>
     <Box sx={{ flexGrow: 1, margin: '0px 10%'}}>
@@ -171,23 +161,34 @@ const EventDisplay = (props: EventDisplayProps) => {
                 </Item>
             </Grid>
             </Grid>
-        <Grid xs={12} md={12} lg={12}
-        container
+        <Grid container xs={12} md={12} lg={12}
+        spacing={2}
         >
-            { currentOrganizer.organizerId ?
+            { currentOrganizer.organizerId ? thisEvent.organizer.organizerId === currentOrganizer.organizerId ?
+            <>
             <Grid xs={6} md={6} lg={6}>
                 <Item onClick={() => nav('/dashboard') }>Dashboard</Item>
             </Grid>
+            <Grid xs={6} md={6} lg={6}>
+                <Item onClick={() => nav('/event/update/'+thisEvent._id) }>Edit</Item>
+            </Grid></>
             :
+            <>
+            <Grid xs={3} md={3} lg={3}></Grid>
+            <Grid xs={6} md={6} lg={6}>
+                <Item onClick={() => nav('/dashboard') }>Dashboard</Item>
+            </Grid>
+            <Grid xs={3} md={3} lg={3}></Grid>
+            </>
+            :
+            <>
+            <Grid xs={3} md={3} lg={3}></Grid>
             <Grid xs={6} md={6} lg={6}>
                 <Item onClick={() => nav('/') }>Home</Item>
             </Grid>
+            <Grid xs={3} md={3} lg={3}></Grid>
+            </>
             }
-            { thisEvent.organizer.organizerId === currentOrganizer.organizerId ?
-            <Grid xs={6} md={6} lg={6}>
-                <Item onClick={() => nav('/event/update/'+thisEvent._id) }>Edit</Item>
-            </Grid>
-            : null }
             </Grid>
         </Grid>
     </Box>

@@ -404,7 +404,7 @@ const EventForm = (props: EventFormProps) => {
                         <Typography>Event Organizer</Typography>
                     </AccordionSummary>
                     <AccordionDetails sx={{position: 'absolute', left: '5%', right: '5%', margin: '0', padding: '0' }}>
-                        <Typography>
+                        <Typography component={'span'}>
                             <Box style={ boxStyle2 }>
                             <TextField
                             style={ addForm }
@@ -479,7 +479,7 @@ const EventForm = (props: EventFormProps) => {
         <Typography >Add New Users</Typography>
     </AccordionSummary>
     <AccordionDetails sx={{position: 'absolute', left: '5%', right: '5%', margin: '0', padding: '0' }}>
-        <Typography>
+        <Typography component={'span'}>
             <Box
             style={ boxStyle2 }
             component="form"
@@ -541,7 +541,7 @@ const EventForm = (props: EventFormProps) => {
             <Typography >Add New Users</Typography>
         </AccordionSummary>
         <AccordionDetails sx={{position: 'absolute', left: '5%', right: '5%', margin: '0', padding: '0' }}>
-            <Typography>
+            <Typography component={'span'}>
                 <Box
                 style={ boxStyle2 }
                 component="form"
@@ -602,7 +602,7 @@ const EventForm = (props: EventFormProps) => {
         <Typography >Add New Users</Typography>
     </AccordionSummary>
     <AccordionDetails sx={{position: 'absolute', left: '5%', right: '5%', margin: '0', padding: '0' }}>
-        <Typography>
+        <Typography component={'span'}>
             <Box
             style={ boxStyle2 }
             component="form"
